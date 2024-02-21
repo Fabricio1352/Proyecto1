@@ -17,6 +17,12 @@ import java.util.logging.Logger;
 import objetos.Cliente;
 
 /**
+ * La clase ClienteDAO implementa la interfaz ICliente y proporciona métodos
+ * para realizar operaciones relacionadas con los clientes en la base de datos.
+ * Utiliza una instancia de IConexion para establecer conexiones con la base de
+ * datos. Esta clase permite el registro, edición, eliminación y búsqueda de
+ * clientes. Debe ser instanciada con un objeto que implemente la interfaz
+ * IConexion para funcionar correctamente.
  *
  * @author fabri
  */
@@ -24,6 +30,12 @@ public class ClienteDAO implements ICliente {
 
     private final IConexion conexion;
 
+    /**
+     * Constructor de la clase ClienteDAO.
+     *
+     * @param conexion Una instancia de IConexion para establecer conexiones con
+     * la base de datos.
+     */
     public ClienteDAO(IConexion conexion) {
         this.conexion = conexion;
     }
@@ -37,7 +49,7 @@ public class ClienteDAO implements ICliente {
 
         Cliente clienteCreado = new Cliente();
         Negocio logNegocio = new Negocio();
-        
+
         try {
             logNegocio.generarID(cliente);
             Connection con = conexion.crearConexion();
@@ -82,7 +94,7 @@ public class ClienteDAO implements ICliente {
                 updateStatement.setString(4, cliente.getColonia());
                 updateStatement.setString(5, cliente.getCodigo_postal());
                 updateStatement.setDate(6, cliente.getFecha_nacimiento());
-                updateStatement.setString(7,cliente.getPassw());
+                updateStatement.setString(7, cliente.getPassw());
                 updateStatement.setInt(8, cliente.getId());
 
                 int filasAfectadas = updateStatement.executeUpdate();

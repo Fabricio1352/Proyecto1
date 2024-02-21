@@ -19,13 +19,21 @@ import objetos.Cliente;
 import objetos.Cuenta;
 
 /**
- *
+ * La clase CuentaDAO implementa la interfaz ICuenta y proporciona métodos para realizar
+ * operaciones relacionadas con las cuentas en la base de datos.
+ * Utiliza una instancia de IConexion para establecer conexiones con la base de datos.
+ * Esta clase permite el registro, edición, eliminación y búsqueda de cuentas.
+ * Debe ser instanciada con un objeto que implemente la interfaz IConexion para funcionar correctamente.
  * @author fabri
  */
 public class CuentaDAO implements ICuenta {
 
     private final IConexion conexion;
-
+    /**
+     * Constructor de la clase CuentaDAO.
+     *
+     * @param conexion Una instancia de IConexion para establecer conexiones con la base de datos.
+     */
     public CuentaDAO(IConexion conexion) {
         this.conexion = conexion;
 
@@ -53,8 +61,8 @@ public class CuentaDAO implements ICuenta {
     @Override
     public Cuenta registrarCuenta(Cuenta cuenta) {
         String creaCuenta = "INSERT INTO cuenta"
-                + "(id_cuenta,saldo, id_cliente)"
-                + "VALUES (?,?,?)";
+                + "(id_cuenta,saldo, id_cliente,estado)"
+                + "VALUES (?,?,?,?)";
 
         Cuenta cuentaCreada = new Cuenta();
         Negocio logNegocio = new Negocio();
@@ -66,7 +74,7 @@ public class CuentaDAO implements ICuenta {
             st.setString(1, cuenta.getIdCuenta());
             st.setInt(2, cuenta.getSaldo());
             st.setInt(3, cuenta.getCliente().getId());
-
+           st.setString(4,"vigente");
             int filasAfectadas = st.executeUpdate();
 
             if (filasAfectadas > 0) {
@@ -80,6 +88,7 @@ public class CuentaDAO implements ICuenta {
         cuentaCreada.setCliente(cuenta.getCliente());
         cuentaCreada.setFechaApertura(cuenta.getFechaApertura());
         cuentaCreada.setSaldo(cuenta.getSaldo());
+        cuentaCreada.setEstado("vigente");
         return cuentaCreada;
 
     }
@@ -115,32 +124,36 @@ public class CuentaDAO implements ICuenta {
         return cuentaActualizada;
 
     }
-
+/**
+ * Cancelar cuenta
+ * @param cuenta
+ * @return 
+ */
     @Override
-    public Cuenta eliminarCuenta(Cuenta cuenta) {
+    public Cuenta cancelarCuenta(Cuenta cuenta) {
+String updateCuenta = "UPDATE cuenta SET estado = 'cancelado' WHERE id_cuenta = ?";
+    Cuenta cuentaCancelada = null;
 
-        String deleteCuenta = "DELETE FROM cuenta WHERE id_cuenta = ?";
-        Cuenta cuentaEliminada = new Cuenta();
-
-        if (cuenta != null) {
-            try {
-                Connection c = conexion.crearConexion();
-                PreparedStatement deleteStatement = c.prepareStatement(deleteCuenta);
-                deleteStatement.setString(1, cuenta.getIdCuenta());
-                int filasAfectadas = deleteStatement.executeUpdate();
-                if (filasAfectadas > 0) {
-                    cuentaEliminada.setIdCuenta(cuenta.getIdCuenta());
-                    cuentaEliminada.setSaldo(cuenta.getSaldo());
-                    cuentaEliminada.setFechaApertura(cuenta.getFechaApertura());
-                    cuentaEliminada.setCliente(cuenta.getCliente());
-                }
-
-            } catch (SQLException e) {
-                Logger.getLogger(CuentaDAO.class.getName()).log(Level.SEVERE, "Error al intentar eliminar la cuenta", e);
+    if (cuenta != null) {
+        try {
+            Connection c = conexion.crearConexion();
+            PreparedStatement updateStatement = c.prepareStatement(updateCuenta);
+            updateStatement.setString(1, cuenta.getIdCuenta());
+            int filasAfectadas = updateStatement.executeUpdate();
+            if (filasAfectadas > 0) {
+                cuentaCancelada = new Cuenta();
+                cuentaCancelada.setIdCuenta(cuenta.getIdCuenta());
+                cuentaCancelada.setSaldo(cuenta.getSaldo());
+                cuentaCancelada.setFechaApertura(cuenta.getFechaApertura());
+                cuentaCancelada.setCliente(cuenta.getCliente());
+                cuentaCancelada.setEstado("cancelado");
             }
+        } catch (SQLException e) {
+            Logger.getLogger(CuentaDAO.class.getName()).log(Level.SEVERE, "Error al intentar cancelar la cuenta", e);
         }
+    }
 
-        return cuentaEliminada;
+    return cuentaCancelada;
 
     }
 
@@ -180,38 +193,35 @@ public class CuentaDAO implements ICuenta {
 
     public ArrayList<Cuenta> buscarCuentaPorCliente(int id) {
         ArrayList<Cuenta> cuentas = new ArrayList<>();
-        String selectCuenta
-                = "SELECT c.id_cuenta, c.fecha_apertura, c.saldo, cli.id "
-                + "FROM cuenta c "
-                + "JOIN cliente cli ON c.id_cliente = cli.id "
-                + "WHERE c.id_cliente = ?";
-        Cuenta cuentaEncontrada;
+    String selectCuenta
+            = "SELECT c.id_cuenta, c.fecha_apertura, c.saldo, cli.id "
+            + "FROM cuenta c "
+            + "JOIN cliente cli ON c.id_cliente = cli.id "
+            + "WHERE c.id_cliente = ? AND c.estado = 'vigente'"; 
 
-        try {
-            Connection c = conexion.crearConexion();
-            PreparedStatement selectStatement = c.prepareStatement(selectCuenta);
+    try {
+        Connection c = conexion.crearConexion();
+        PreparedStatement selectStatement = c.prepareStatement(selectCuenta);
 
-            selectStatement.setInt(1, id);
+        selectStatement.setInt(1, id);
 
-            ResultSet resultSet = selectStatement.executeQuery();
+        ResultSet resultSet = selectStatement.executeQuery();
 
-            while (resultSet.next()) {
-                cuentaEncontrada = new Cuenta();
-                cuentaEncontrada.setIdCuenta(resultSet.getString("id_cuenta"));
-                cuentaEncontrada.setFechaApertura(resultSet.getDate("fecha_apertura"));
-                cuentaEncontrada.setSaldo(resultSet.getInt("saldo"));
-                Cliente cliente = new Cliente();
-                cliente.setId(resultSet.getInt("id"));
-                cuentaEncontrada.setCliente(cliente);
-                cuentas.add(cuentaEncontrada);
-
-            }
-
-        } catch (SQLException e) {
-            Logger.getLogger(CuentaDAO.class.getName()).log(Level.SEVERE, "Error en la operacion, verifica los datos", e);
-
+        while (resultSet.next()) {
+            Cuenta cuentaEncontrada = new Cuenta();
+            cuentaEncontrada.setIdCuenta(resultSet.getString("id_cuenta"));
+            cuentaEncontrada.setFechaApertura(resultSet.getDate("fecha_apertura"));
+            cuentaEncontrada.setSaldo(resultSet.getInt("saldo"));
+            Cliente cliente = new Cliente();
+            cliente.setId(resultSet.getInt("id"));
+            cuentaEncontrada.setCliente(cliente);
+            cuentas.add(cuentaEncontrada);
         }
-        return cuentas;
+
+    } catch (SQLException e) {
+        Logger.getLogger(CuentaDAO.class.getName()).log(Level.SEVERE, "Error en la operacion, verifica los datos", e);
+    }
+    return cuentas;
     }
 
 }

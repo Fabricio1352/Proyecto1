@@ -92,18 +92,14 @@ CREATE PROCEDURE verHistorial(IN id VARCHAR(16))
 BEGIN
 	SELECT
 		id_transaccion AS 'Id',
-<<<<<<< HEAD
         fecha_hora_transaccion AS 'Fecha',
-=======
-        fecha_hora_transaccion AS 'Fecha y hora',
->>>>>>> 7a58e86f83cf85b8f1597121c3d0921368abb9da
         cantidad AS 'Monto',
 			CASE 
 				# para que no se muestren 0 y 1, le damos formato usando WHEN
                 # tambien se pudo cambiar el atributo de la columna tipo_transaccion a un ENUM
                 # que guarde valores de 'folio' y 'cliente' pero es mas facil operar con true y false
 				WHEN tipo_transaccion = 0 THEN 'Transferencia'
-                WHEN tipo_transaccion = 1 THEN 'Retiro'
+                WHEN tipo_transaccion = 1 THEN 'Cliente'
 			END AS 'Tipo de Transacción'
 
     FROM
@@ -195,8 +191,45 @@ DELIMITER ;
 
 
 
+drop procedure cobrartransaccion;
+DELIMITER $$
+CREATE PROCEDURE CobrarTransaccion(
+    IN folioTransaccion VARCHAR(255),
+    IN passwTransaccion VARCHAR(8)
+)
+BEGIN
+    DECLARE idTransaccion INT;
+    DECLARE estadoTransaccion VARCHAR(20);
+    DECLARE montoTransaccion INT;
+    DECLARE cuentaID VARCHAR(16);
 
+    -- Buscar el id_transaccion asociado al folio y contraseña 
+    SELECT id_transaccion, estado INTO idTransaccion, estadoTransaccion
+    FROM TransaccionFolioCliente
+    WHERE folio_transaccion = folioTransaccion AND password_transaccion = passwTransaccion;
 
+    -- Verificar si se encontró alguna transacción con el folio y contraseña proporcionados
+    IF idTransaccion IS NOT NULL THEN
+        -- Obtener el estado de la transacción
+        IF estadoTransaccion = 'no cobrado' THEN
+            -- Obtener la cantidad de la transacción y la cuenta asociada
+            SELECT cantidad, id_cuenta INTO montoTransaccion, cuentaID
+            FROM Transaccion
+            WHERE id_transaccion = idTransaccion;
+
+            -- Actualizar el estado de la transacción a 'cobrado'
+            UPDATE TransaccionFolioCliente
+            SET estado = 'cobrado'
+            WHERE id_transaccion = idTransaccion;
+
+            -- Restar el monto de la transacción al saldo de la cuenta asociada
+            UPDATE Cuenta
+            SET saldo = saldo - montoTransaccion
+            WHERE id_cuenta = cuentaID;
+        END IF;
+    END IF;
+END$$
+DELIMITER ;
 
 
 
@@ -236,6 +269,7 @@ CREATE TABLE Cuenta(
 	fecha_apertura TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	saldo BIGINT,	
     id_cliente INT NOT NULL,
+    estado VARCHAR(16) DEFAULT 'vigente',
     FOREIGN KEY (id_cliente) REFERENCES Cliente(id)
 );
 
@@ -284,7 +318,7 @@ CREATE TABLE TransaccionFolioCliente(
 id_transaccion INT,
 folio_transaccion VARCHAR(255),
 password_transaccion VARCHAR(8),
-estado boolean DEFAULT FALSE,
--- tiempo TIMESTAMP,
+estado VARCHAR(20) DEFAULT 'no cobrado',
+ tiempo TIMESTAMP DEFAULT NULL  ,
 FOREIGN KEY  (id_transaccion) REFERENCES Transaccion(id_transaccion )
 );

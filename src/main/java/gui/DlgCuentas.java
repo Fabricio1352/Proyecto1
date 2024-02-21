@@ -1,10 +1,8 @@
 package gui;
 
-import dao.ConexionDB;
-import dao.CuentaDAO;
-import dao.TransaccionDAO;
-import dao.interfaces.IConexion;
+import control.Control;
 import java.awt.Color;
+import java.awt.Component;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -18,32 +16,22 @@ import objetos.Transaccion;
  */
 public class DlgCuentas extends javax.swing.JDialog {
 
-    private final DefaultTableModel modelTable;
     private final Cliente cliente;
-    private final CuentaDAO cuentaDao;
-    private final IConexion con;
-    private final Cuenta cuenta;
-    private final TransaccionDAO transaccionDao;
+    private Cuenta cuenta;
+    private final Control control;
 
-    public DlgCuentas(java.awt.Frame parent, boolean modal, Cliente cliente, Cuenta cuenta, CuentaDAO cuentaDao) {
+    public DlgCuentas(java.awt.Frame parent, boolean modal, Cliente cliente, Cuenta cuenta) {
         super(parent, modal);
-        initComponents();
-        con = new ConexionDB("jdbc:mysql://localhost:3306/banco", "root", "root");
         this.cliente = cliente;
         this.cuenta = cuenta;
-        this.cuentaDao=cuentaDao;
-        modelTable = new DefaultTableModel();
-        transaccionDao = new TransaccionDAO(con);
+        control = new Control();
+        initComponents();
 
-        String ids[] = {"Transaccion ", "Fecha ", "Cantidad "};
-        modelTable.setColumnIdentifiers(ids);
-        tablaHistorial.setModel(modelTable);
+        agregarComponentes(componentTransferencia, 300, 170, 687, 415);
+        agregarComponentes(componentTablaHistorial, 300, 170, 687, 415);
+        agregarComponentes(componentPanelFolios, 350, 170, 687, 415);
+        agregarComponentes(componentConfig, 300, 170, 687, 415);
 
-
-        getContentPane().add(componentTransferencia);
-        componentTransferencia.setBounds(300, 170, 687, 415);
-        getContentPane().add(componentTablaHistorial);
-        componentTablaHistorial.setBounds(300, 170, 687, 415);
     }
 
     @SuppressWarnings("unchecked")
@@ -53,40 +41,46 @@ public class DlgCuentas extends javax.swing.JDialog {
         componentTransferencia = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         txtSaldoActual = new javax.swing.JLabel();
-        btnRegresar = new javax.swing.JLabel();
         btnAceptar = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         labelCantidad = new javax.swing.JTextField();
         labelDestino = new javax.swing.JTextField();
-        componentPanelConfig = new javax.swing.JPanel();
         componentTablaHistorial = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaHistorial = new javax.swing.JTable();
         btnAceptar2 = new javax.swing.JLabel();
+        componentConfig = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        cerrarSesionBtn = new javax.swing.JLabel();
+        regresarBtn = new javax.swing.JLabel();
+        cancelarCuentaBtn = new javax.swing.JLabel();
+        ActualizarBtn = new javax.swing.JLabel();
+        componentPanelFolios = new javax.swing.JPanel();
+        labelPw = new javax.swing.JLabel();
+        btnAceptarFolios = new javax.swing.JLabel();
+        labelGenerarFolio = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        labelCantidadRetirar = new javax.swing.JTextField();
+        labelMostrarFolio = new javax.swing.JLabel();
+        labelMostrarPw = new javax.swing.JLabel();
         btnTransf = new javax.swing.JLabel();
         txtBienvenido = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         btnHistorial = new javax.swing.JLabel();
         btnFolio1 = new javax.swing.JLabel();
         btnAjustes = new javax.swing.JLabel();
+        btnRegresarMenuPrincipal = new javax.swing.JLabel();
 
         componentTransferencia.setVisible(false);
 
         jLabel4.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 18)); // NOI18N
         jLabel4.setText("Saldo Actual:");
 
-        txtSaldoActual.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 18)); // NOI18N
+        txtSaldoActual.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 14)); // NOI18N
         txtSaldoActual.setBackground(new Color(176, 186, 195));
-
-        btnRegresar.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
-        btnRegresar.setText("Regresar");
-        btnRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnRegresarMouseClicked(evt);
-            }
-        });
 
         btnAceptar.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
         btnAceptar.setText("Aceptar");
@@ -103,11 +97,11 @@ public class DlgCuentas extends javax.swing.JDialog {
         jLabel7.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 18)); // NOI18N
         jLabel7.setText("Numero de Cuenta");
 
-        labelCantidad.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 17)); // NOI18N
+        labelCantidad.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 14)); // NOI18N
         labelCantidad.setBorder(null);
         labelCantidad.setBackground(new Color(176, 186, 195));
 
-        labelDestino.setFont(new java.awt.Font("sansserif", 0, 17)); // NOI18N
+        labelDestino.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 14)); // NOI18N
         labelDestino.setBorder(null);
         labelDestino.setBackground(new Color(176, 186, 195));
         labelDestino.addActionListener(new java.awt.event.ActionListener() {
@@ -122,22 +116,17 @@ public class DlgCuentas extends javax.swing.JDialog {
             componentTransferenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(componentTransferenciaLayout.createSequentialGroup()
                 .addGroup(componentTransferenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(componentTransferenciaLayout.createSequentialGroup()
-                        .addGroup(componentTransferenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(componentTransferenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, componentTransferenciaLayout.createSequentialGroup()
-                                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel4))
-                                .addGroup(componentTransferenciaLayout.createSequentialGroup()
-                                    .addGap(70, 70, 70)
-                                    .addComponent(jLabel7)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, componentTransferenciaLayout.createSequentialGroup()
-                                .addGap(25, 25, 25)
-                                .addComponent(jLabel6)))
-                        .addGap(40, 40, 40))
+                    .addGroup(componentTransferenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, componentTransferenciaLayout.createSequentialGroup()
+                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel4))
+                        .addGroup(componentTransferenciaLayout.createSequentialGroup()
+                            .addGap(70, 70, 70)
+                            .addComponent(jLabel7)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, componentTransferenciaLayout.createSequentialGroup()
-                        .addComponent(btnRegresar)
-                        .addGap(78, 78, 78)))
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel6)))
+                .addGap(40, 40, 40)
                 .addGroup(componentTransferenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(labelDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -163,21 +152,8 @@ public class DlgCuentas extends javax.swing.JDialog {
                     .addComponent(jLabel7)
                     .addComponent(labelDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                .addGroup(componentTransferenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAceptar)
-                    .addComponent(btnRegresar))
+                .addComponent(btnAceptar)
                 .addGap(32, 32, 32))
-        );
-
-        javax.swing.GroupLayout componentPanelConfigLayout = new javax.swing.GroupLayout(componentPanelConfig);
-        componentPanelConfig.setLayout(componentPanelConfigLayout);
-        componentPanelConfigLayout.setHorizontalGroup(
-            componentPanelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        componentPanelConfigLayout.setVerticalGroup(
-            componentPanelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
         );
 
         componentTablaHistorial.setVisible(false);
@@ -234,6 +210,104 @@ public class DlgCuentas extends javax.swing.JDialog {
                 .addGap(17, 17, 17))
         );
 
+        componentConfig.setVisible(false);
+        componentConfig.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 17)); // NOI18N
+        jLabel1.setText("Mi cuenta");
+        componentConfig.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 0, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 17)); // NOI18N
+        jLabel2.setText("Numero de cuenta: "+cuenta.getIdCuenta());
+        componentConfig.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 270, -1));
+
+        jLabel3.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 17)); // NOI18N
+        jLabel3.setText("Propietario: "+cliente.getNombre()+" "+cliente.getApellido_paterno()+" "+cliente.getApellido_materno());
+        componentConfig.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, -1, -1));
+
+        cerrarSesionBtn.setBackground(new java.awt.Color(255, 255, 153));
+        cerrarSesionBtn.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 17)); // NOI18N
+        cerrarSesionBtn.setText("Cerrar sesión");
+        cerrarSesionBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cerrarSesionBtnMouseClicked(evt);
+            }
+        });
+        componentConfig.add(cerrarSesionBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 260, -1, -1));
+
+        regresarBtn.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 17)); // NOI18N
+        regresarBtn.setText("Regresar");
+        regresarBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                regresarBtnMouseClicked(evt);
+            }
+        });
+        componentConfig.add(regresarBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, -1));
+
+        cancelarCuentaBtn.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 17)); // NOI18N
+        cancelarCuentaBtn.setText("Cancelar cuenta");
+        cancelarCuentaBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cancelarCuentaBtnMouseClicked(evt);
+            }
+        });
+        componentConfig.add(cancelarCuentaBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 220, -1, -1));
+
+        ActualizarBtn.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 17)); // NOI18N
+        ActualizarBtn.setText("Actualizar Datos");
+        ActualizarBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ActualizarBtnMouseClicked(evt);
+            }
+        });
+        componentConfig.add(ActualizarBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, -1, -1));
+
+        componentPanelFolios.setVisible(false);
+        componentPanelFolios.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                componentPanelFoliosformComponentShown(evt);
+            }
+        });
+        componentPanelFolios.setLayout(null);
+
+        labelPw.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 14)); // NOI18N
+        componentPanelFolios.add(labelPw);
+        labelPw.setBounds(164, 188, 175, 31);
+
+        btnAceptarFolios.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
+        btnAceptarFolios.setText("Aceptar");
+        btnAceptarFolios.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAceptarFolios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAceptarFoliosMouseClicked(evt);
+            }
+        });
+        componentPanelFolios.add(btnAceptarFolios);
+        btnAceptarFolios.setBounds(276, 249, 63, 25);
+
+        labelGenerarFolio.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 14)); // NOI18N
+        componentPanelFolios.add(labelGenerarFolio);
+        labelGenerarFolio.setBounds(164, 137, 175, 31);
+
+        jLabel8.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 18)); // NOI18N
+        jLabel8.setText("Cantidad a retirar: ");
+        componentPanelFolios.add(jLabel8);
+        jLabel8.setBounds(58, 53, 143, 33);
+        componentPanelFolios.add(labelCantidadRetirar);
+        labelCantidadRetirar.setBounds(219, 56, 120, 33);
+
+        labelMostrarFolio.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 14)); // NOI18N
+        labelMostrarFolio.setText("Folio: ");
+        labelMostrarFolio.setVisible(false);
+        componentPanelFolios.add(labelMostrarFolio);
+        labelMostrarFolio.setBounds(59, 137, 36, 33);
+
+        labelMostrarPw.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 14)); // NOI18N
+        labelMostrarPw.setText("Contrasena:");
+        labelMostrarPw.setVisible(false);
+        componentPanelFolios.add(labelMostrarPw);
+        labelMostrarPw.setBounds(59, 188, 72, 33);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(1250, 700));
@@ -254,10 +328,10 @@ public class DlgCuentas extends javax.swing.JDialog {
             }
         });
 
-        txtBienvenido.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 31)); // NOI18N
+        txtBienvenido.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 36)); // NOI18N
         txtBienvenido.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        jLabel5.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 31)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 36)); // NOI18N
         jLabel5.setText("¿Qué operación desea realizar?   ");
         //jLabel5.setLocation(625, 100);
 
@@ -284,29 +358,51 @@ public class DlgCuentas extends javax.swing.JDialog {
         btnAjustes.setFont(new java.awt.Font("Yu Gothic UI", 0, 27)); // NOI18N
         btnAjustes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnAjustes.setText("Ajustes");
+        btnAjustes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAjustes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAjustesMouseClicked(evt);
+            }
+        });
+
+        btnRegresarMenuPrincipal.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 27)); // NOI18N
+        btnRegresarMenuPrincipal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnRegresarMenuPrincipal.setText("Regresar");
+        btnRegresarMenuPrincipal.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRegresarMenuPrincipal.setVisible(false);
+        btnRegresarMenuPrincipal.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRegresarMenuPrincipalMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(64, 64, 64)
+                .addComponent(btnTransf, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
+                .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(165, 165, 165)
+                .addComponent(btnFolio1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(137, 137, 137)
+                .addComponent(btnAjustes, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34))
             .addGroup(layout.createSequentialGroup()
-                .addGap(379, 379, 379)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(txtBienvenido, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel5))
+                        .addGap(379, 379, 379)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(50, 50, 50)
+                                .addComponent(txtBienvenido, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel5)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(94, 94, 94)
+                        .addComponent(btnRegresarMenuPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(104, 104, 104)
-                .addComponent(btnTransf, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(168, 168, 168)
-                .addComponent(btnFolio1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(125, 125, 125)
-                .addComponent(btnAjustes, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(88, 88, 88))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -315,13 +411,15 @@ public class DlgCuentas extends javax.swing.JDialog {
                 .addComponent(txtBienvenido, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(8, 8, 8)
                 .addComponent(jLabel5)
-                .addGap(174, 174, 174)
+                .addGap(186, 186, 186)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnFolio1)
                     .addComponent(btnAjustes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnHistorial)
                     .addComponent(btnTransf, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(383, Short.MAX_VALUE))
+                .addGap(253, 253, 253)
+                .addComponent(btnRegresarMenuPrincipal)
+                .addGap(75, 75, 75))
         );
 
         pack();
@@ -347,25 +445,16 @@ public class DlgCuentas extends javax.swing.JDialog {
 
     }//GEN-LAST:event_btnHistorialMouseClicked
 
-    private void btnRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegresarMouseClicked
-
-        mostrarDlgPrincipal();
-
-
-    }//GEN-LAST:event_btnRegresarMouseClicked
-
     private void btnAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptarMouseClicked
-        String idDestino = labelDestino.getText();
-        int cantidad = Integer.parseInt(labelCantidad.getText());
-        if (cantidad > cuenta.getSaldo()) {
-            JOptionPane.showMessageDialog(this, "No tienes suficiente saldo, la operacion ha sido revertida");
-        } else {
+        if (!control.transferir(cuenta.getIdCuenta(), labelCantidad.getText(), labelDestino.getText(), cuenta.getSaldo())) {
+            labelCantidad.setText("");
+            labelDestino.setText("");
 
-            cuentaDao.transferencia(cuenta.getIdCuenta(), cantidad, idDestino);
-            transaccionDao.registrarTransaccion(new Transaccion(true, cantidad, cuenta));
-            JOptionPane.showMessageDialog(this, "Operacion Exitosa");
+        } else {
             mostrarDlgPrincipal();
+
         }
+
 
     }//GEN-LAST:event_btnAceptarMouseClicked
 
@@ -375,16 +464,15 @@ public class DlgCuentas extends javax.swing.JDialog {
     }//GEN-LAST:event_labelDestinoActionPerformed
 
     private void btnFolio1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFolio1MouseClicked
-        // TODO add your handling code here:
+        mostrarPanelFolio();
+
+
     }//GEN-LAST:event_btnFolio1MouseClicked
+
 
     private void componentTablaHistorialformComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_componentTablaHistorialformComponentShown
 
-        ArrayList<Transaccion> transacciones = transaccionDao.verHistorial(cuenta.getIdCuenta());
-
-        for (Transaccion i : transacciones) {
-            modelTable.addRow(new Object[]{i.getFormatoTipoTransaccion(), i.getFechahora_transaccion(), i.getCantidad()});
-        }
+        crearTablaHistorial();
 
 
     }//GEN-LAST:event_componentTablaHistorialformComponentShown
@@ -395,13 +483,74 @@ public class DlgCuentas extends javax.swing.JDialog {
 
     }//GEN-LAST:event_btnAceptar2MouseClicked
 
+    private void cerrarSesionBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cerrarSesionBtnMouseClicked
+        dispose();
+    }//GEN-LAST:event_cerrarSesionBtnMouseClicked
+
+    private void regresarBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_regresarBtnMouseClicked
+        mostrarDlgPrincipal();
+    }//GEN-LAST:event_regresarBtnMouseClicked
+
+    private void ActualizarBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ActualizarBtnMouseClicked
+        control.actualizarCliente(cliente);
+    }//GEN-LAST:event_ActualizarBtnMouseClicked
+
+    private void btnAjustesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAjustesMouseClicked
+        mostrarPanelAjustes();
+
+    }//GEN-LAST:event_btnAjustesMouseClicked
+
+    private void cancelarCuentaBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelarCuentaBtnMouseClicked
+        cuenta = control.cancelarCuenta(cuenta);
+        System.out.println(cuenta.getEstado());
+        if ("cancelado".equals(cuenta.getEstado())) {
+            JOptionPane.showMessageDialog(this, "La cuenta ha sido cancelada exitosamente.");
+            dispose();
+        }
+
+    }//GEN-LAST:event_cancelarCuentaBtnMouseClicked
+
+    private void btnAceptarFoliosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptarFoliosMouseClicked
+        if (labelCantidadRetirar.getText().equals("")) {
+        } else {
+            mostrarFolioPw();
+
+        }
+
+
+    }//GEN-LAST:event_btnAceptarFoliosMouseClicked
+
+
+    private void componentPanelFoliosformComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_componentPanelFoliosformComponentShown
+
+
+    }//GEN-LAST:event_componentPanelFoliosformComponentShown
+
+    private void btnRegresarMenuPrincipalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegresarMenuPrincipalMouseClicked
+        mostrarDlgPrincipal();
+
+
+    }//GEN-LAST:event_btnRegresarMenuPrincipalMouseClicked
+    private void mostrarPanelFolio() {
+        componentPanelFolios.setVisible(true);
+        btnTransf.setVisible(false);
+        btnFolio1.setVisible(false);
+        btnHistorial.setVisible(false);
+        btnAjustes.setVisible(false);
+        btnRegresarMenuPrincipal.setVisible(true);
+
+    }
+
     private void mostrarDlgPrincipal() {
         componentTransferencia.setVisible(false);
+        componentPanelFolios.setVisible(false);
+        componentConfig.setVisible(false);
         btnTransf.setVisible(true);
         btnFolio1.setVisible(true);
         btnHistorial.setVisible(true);
         btnAjustes.setVisible(true);
         componentTablaHistorial.setVisible(false);
+        btnRegresarMenuPrincipal.setVisible(false);
 
     }
 
@@ -412,6 +561,7 @@ public class DlgCuentas extends javax.swing.JDialog {
         btnAjustes.setVisible(false);
         componentTransferencia.setVisible(false);
         btnHistorial.setVisible(false);
+        btnRegresarMenuPrincipal.setVisible(true);
 
     }
 
@@ -421,25 +571,99 @@ public class DlgCuentas extends javax.swing.JDialog {
         btnAjustes.setVisible(false);
         btnHistorial.setVisible(false);
         btnFolio1.setVisible(false);
+        btnRegresarMenuPrincipal.setVisible(true);
+
+    }
+
+    private void mostrarPanelAjustes() {
+        btnAjustes.setVisible(false);
+        btnTransf.setVisible(false);
+        btnFolio1.setVisible(false);
+        btnHistorial.setVisible(false);
+        componentConfig.setVisible(true);
+        btnRegresarMenuPrincipal.setVisible(true);
+    }
+
+    private void mostrarFolioPw() {
+
+        int cantidadRetirar = Integer.parseInt(labelCantidadRetirar.getText());
+
+        if (control.crearTimerExpiracion(cantidadRetirar, cuenta.getSaldo(), cuenta) == false) {
+            labelMostrarFolio.setVisible(false);
+            labelMostrarPw.setVisible(false);
+            labelPw.setText("");
+            labelGenerarFolio.setText("");
+            return;
+        }
+        String pw = control.getPw(cantidadRetirar, cuenta);
+        String folio = control.getFolio(cantidadRetirar, cuenta);
+        labelPw.setText(pw);
+        labelGenerarFolio.setText(folio);
+        labelMostrarFolio.setVisible(true);
+        labelMostrarPw.setVisible(true);
+        labelCantidadRetirar.setText("");
+    }
+
+    /**
+     * Metodo auxiliar para reutilizar codigo, en caso de que se requiera
+     * agregar mas componentes (paneles) al frame
+     *
+     * @param componente
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     */
+    private void agregarComponentes(Component componente, int x, int y, int width, int height) {
+        getContentPane().add(componente);
+        componente.setBounds(x, y, width, height);
+
+    }
+
+    private void crearTablaHistorial() {
+        DefaultTableModel modelTable = new DefaultTableModel();
+        String ids[] = {"Transaccion ", "Fecha ", "Cantidad "};
+        modelTable.setColumnIdentifiers(ids);
+        tablaHistorial.setModel(modelTable);
+        ArrayList<Transaccion> transacciones = control.obtenerListaTransacciones(cuenta.getIdCuenta());
+
+        for (Transaccion i : transacciones) {
+            modelTable.addRow(new Object[]{i.getFormatoTipoTransaccion(), i.getFechahora_transaccion(), i.getCantidad()});
+        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel ActualizarBtn;
     private javax.swing.JLabel btnAceptar;
     private javax.swing.JLabel btnAceptar2;
+    private javax.swing.JLabel btnAceptarFolios;
     private javax.swing.JLabel btnAjustes;
     private javax.swing.JLabel btnFolio1;
     private javax.swing.JLabel btnHistorial;
-    private javax.swing.JLabel btnRegresar;
+    private javax.swing.JLabel btnRegresarMenuPrincipal;
     private javax.swing.JLabel btnTransf;
-    private javax.swing.JPanel componentPanelConfig;
+    private javax.swing.JLabel cancelarCuentaBtn;
+    private javax.swing.JLabel cerrarSesionBtn;
+    private javax.swing.JPanel componentConfig;
+    private javax.swing.JPanel componentPanelFolios;
     private javax.swing.JPanel componentTablaHistorial;
     private javax.swing.JPanel componentTransferencia;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField labelCantidad;
+    private javax.swing.JTextField labelCantidadRetirar;
     private javax.swing.JTextField labelDestino;
+    private javax.swing.JLabel labelGenerarFolio;
+    private javax.swing.JLabel labelMostrarFolio;
+    private javax.swing.JLabel labelMostrarPw;
+    private javax.swing.JLabel labelPw;
+    private javax.swing.JLabel regresarBtn;
     private javax.swing.JTable tablaHistorial;
     private javax.swing.JLabel txtBienvenido;
     private javax.swing.JLabel txtSaldoActual;

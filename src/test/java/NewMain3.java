@@ -37,7 +37,7 @@ public class NewMain3 {
         Cliente cliente1 = dao1.buscarCliente(1);
         // Supongamos que tienes un DAO para obtener las cuentas del cliente
         CuentaDAO cuentaDAO = new CuentaDAO(conexionDB);
-        Cuenta cuenta1 = cuentaDAO.buscarCuenta("0601518060075587");
+        Cuenta cuenta1 = cuentaDAO.buscarCuenta("1");
 //        
 //        // Crear un DefaultComboBoxModel con las cuentas del cliente
 //        cuentasComboBoxModel = con.cuentasComboBoxModel(cuentaDAO.buscarCuentaPorCliente(cliente.getId()));
@@ -48,7 +48,7 @@ public class NewMain3 {
 //        // Mostrar el diálogo
 //        dlgCuenta.setVisible(true);
 
-        DlgCuentas dlg = new DlgCuentas(null, true, cliente1,cuenta1,null );
+        DlgCuentas dlg = new DlgCuentas(null, true, cliente1,cuenta1 );
         dlg.setVisible(true);
 //        TransaccionDAO daoTrans = new TransaccionDAO(conexionDB);
 //        System.out.println(daoTrans.verHistorial("0601518060075587"));

@@ -13,16 +13,58 @@ import objetos.Cliente;
  * @author abelc
  */
 public class DlgRegistro extends javax.swing.JDialog {
-private Cliente cliente;
+
+    private Cliente cliente;
+    private int operacion;
+
     /**
      * Creates new form DlgRegistro
      */
-    public DlgRegistro(java.awt.Frame parent, boolean modal,Cliente cliente) {
+    public DlgRegistro(java.awt.Frame parent, boolean modal, Cliente cliente, int operacion) {
         super(parent, modal);
-        this.cliente=cliente;
+        this.cliente = cliente;
+        this.operacion=operacion;
         initComponents();
-         setVisible(true);       
         
+        if (operacion == 1) {
+            jLabel1.setText("registrarme");
+            registrarseBoton.setText("Registrarme");
+            nombresTextField.setEditable(true);
+            apPaternoTextField.setEditable(true);
+            apMaternoTextField.setEditable(true);
+            jDateChooser1.setEnabled(true);
+            calleTextField.setEditable(true);
+            coloniaTextField.setEditable(true);
+            cpTextField.setEditable(true);
+            jPasswordField1.setEditable(true);
+            jPasswordField2.setEditable(true);
+        }
+        if (operacion == 2) {
+            jLabel1.setText("Actualizar informacion");
+            registrarseBoton.setText("Actualizar");
+            jLabel8.setVisible(false);
+            jLabel9.setVisible(false);
+            nombresTextField.setText(cliente.getNombre());
+            apPaternoTextField.setText(cliente.getApellido_paterno());
+            apMaternoTextField.setText(cliente.getApellido_materno());
+            calleTextField.setText(cliente.getCalle());
+            coloniaTextField.setText(cliente.getColonia());
+            cpTextField.setText(cliente.getCodigo_postal());
+            jDateChooser1.setDate(cliente.getFecha_nacimiento());
+            
+            nombresTextField.setEditable(true);
+            apPaternoTextField.setEditable(true);
+            apMaternoTextField.setEditable(true);
+            jDateChooser1.setEnabled(false);
+            calleTextField.setEditable(true);
+            coloniaTextField.setEditable(true);
+            cpTextField.setEditable(true);
+            jPasswordField1.setEditable(false);
+            jPasswordField1.setVisible(false);
+            jPasswordField2.setEditable(false);
+            jPasswordField2.setVisible(false);
+        }
+setVisible(true);
     }
 
     /**
@@ -135,6 +177,7 @@ private Cliente cliente;
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(101, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGap(47, 47, 47)
@@ -154,18 +197,13 @@ private Cliente cliente;
                     .addComponent(jLabel10)
                     .addComponent(apPaternoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nombresTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(149, 149, 149))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(199, 199, 199)))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(apMaternoTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))))
+                        .addComponent(apMaternoTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)))
+                .addGap(50, 50, 50))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -220,30 +258,41 @@ private Cliente cliente;
     }// </editor-fold>//GEN-END:initComponents
 
     private void registrarseBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarseBotonActionPerformed
-          cliente.setNombre(nombresTextField.getText());
-        cliente.setApellido_paterno(apPaternoTextField.getText());
-        cliente.setApellido_materno(apMaternoTextField.getText());
-        Date fechaSeleccionada = jDateChooser1.getDate();
-        java.sql.Date fechaNacimiento = new java.sql.Date(fechaSeleccionada.getTime());
-        cliente.setFecha_nacimiento(fechaNacimiento);
-        cliente.setCalle(calleTextField.getText());
-        cliente.setColonia(coloniaTextField.getText());
-        cliente.setCodigo_postal(cpTextField.getText());
-        String contrasena1 = jPasswordField1.getText();
-        String contrasena2 = jPasswordField2.getText();
-        if (contrasena1.equals(contrasena2)) { //revisa que los dos campos tengan la misma contraseña
-            cliente.setPassw(contrasena1); 
-            dispose();
-        } else {
-            JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+        if (operacion == 1) {
+            cliente.setNombre(nombresTextField.getText());
+            cliente.setApellido_paterno(apPaternoTextField.getText());
+            cliente.setApellido_materno(apMaternoTextField.getText());
+            Date fechaSeleccionada = jDateChooser1.getDate();
+            java.sql.Date fechaNacimiento = new java.sql.Date(fechaSeleccionada.getTime());
+            cliente.setFecha_nacimiento(fechaNacimiento);
+            cliente.setCalle(calleTextField.getText());
+            cliente.setColonia(coloniaTextField.getText());
+            cliente.setCodigo_postal(cpTextField.getText());
+            String contrasena1 = jPasswordField1.getText();
+            String contrasena2 = jPasswordField2.getText();
+            if (contrasena1.equals(contrasena2)) { //revisa que los dos campos tengan la misma contraseña
+                cliente.setPassw(contrasena1);
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
-        
-        
+        if (operacion == 2) {
+      cliente.setNombre(nombresTextField.getText());
+            cliente.setApellido_paterno(apPaternoTextField.getText());
+            cliente.setApellido_materno(apMaternoTextField.getText());
+            Date fechaSeleccionada = jDateChooser1.getDate();
+            java.sql.Date fechaNacimiento = new java.sql.Date(fechaSeleccionada.getTime());
+            cliente.setFecha_nacimiento(fechaNacimiento);
+            cliente.setCalle(calleTextField.getText());
+            cliente.setColonia(coloniaTextField.getText());
+            cliente.setCodigo_postal(cpTextField.getText());
+            dispose();
 
+        }
 
 
     }//GEN-LAST:event_registrarseBotonActionPerformed
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

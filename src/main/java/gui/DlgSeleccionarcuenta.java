@@ -178,7 +178,7 @@ public class DlgSeleccionarcuenta extends javax.swing.JDialog {
         IConexion conexionDB = new ConexionDB("jdbc:mysql://localhost:3306/banco", "root", "root");
 
         dao = new CuentaDAO(conexionDB);
-        DlgCuentas dlgc = new DlgCuentas(null, true, cliente, dao.buscarCuenta(numCuenta), dao);
+        DlgCuentas dlgc = new DlgCuentas(null, true, cliente, dao.buscarCuenta(numCuenta));
         this.dispose();
         dlgc.setVisible(true);
 
@@ -192,7 +192,7 @@ public class DlgSeleccionarcuenta extends javax.swing.JDialog {
     private void crearCuentaLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_crearCuentaLabelMouseClicked
         String password = JOptionPane.showInputDialog(this, "Ingrese su contraseña:", "Confirmación de contraseña", JOptionPane.PLAIN_MESSAGE);
 
-        control.encriptarPassw(password);
+        password=control.encriptarPassw(password);
 
         if (password != null && password.equals(cliente.getPassw())) {
             Cuenta nuevaCuenta;

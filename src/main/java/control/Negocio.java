@@ -15,7 +15,7 @@ import objetos.Transaccion;
 import org.apache.commons.lang3.RandomStringUtils;
 
 /**
- *
+ *Clase que representa la logica de negocio
  * @author abelc
  */
 // Por si cambiamos la log de negocios a java hice esta clase
@@ -38,7 +38,11 @@ public class Negocio {
         clienteDAO = new ClienteDAO(conexionDB);
         cuentaDAO = new CuentaDAO(conexionDB);
     }
-
+/**
+ * Metodo que gennera un id con 5 caracteres numericos al azar
+ * @param cliente
+ * @return objeto cliente con el id asignado
+ */
     public Cliente generarID(Cliente cliente) {
         boolean id = false;
 // se repite hasta que lo que regrese el metodo buscar cliente sea null, osea no repetido 
@@ -52,7 +56,11 @@ public class Negocio {
         }
         return cliente;
     }
-
+/**
+ * genera un numero de cuanta con 16 carcateres al azar
+ * @param cuenta
+ * @return objeto cuenta con los caracteres
+ */
     public Cuenta generarNumCuenta(Cuenta cuenta) {
         boolean id = false;
 // se repite hasta que lo que regrese el metodo buscar cliente sea null, osea no repetido 

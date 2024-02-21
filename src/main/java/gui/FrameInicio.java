@@ -102,6 +102,11 @@ public class FrameInicio extends javax.swing.JFrame {
         retiroFolioBoton.setText("Realizar retiro sin cuenta");
         retiroFolioBoton.setBorderPainted(false);
         retiroFolioBoton.setContentAreaFilled(false);
+        retiroFolioBoton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                retiroFolioBotonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -204,6 +209,10 @@ public class FrameInicio extends javax.swing.JFrame {
             evt.consume();
         }
     }//GEN-LAST:event_idClientetextFieldKeyTyped
+
+    private void retiroFolioBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retiroFolioBotonActionPerformed
+        DlgCobrarFolio dlgCobrarFolio=new DlgCobrarFolio(this,true);
+    }//GEN-LAST:event_retiroFolioBotonActionPerformed
 
     /**
      * @param args the command line arguments
