@@ -118,7 +118,6 @@ public class TransaccionFolioDAO {
     }
 
     public TransaccionFolio editarTransaccion(TransaccionFolio t) {
-        ResultSet rs;
         String editarTrans = "UPDATE transaccionfoliocliente SET estado = ?, tiempo = ? WHERE id_transaccion = ?";
 
         TransaccionFolio tr = new TransaccionFolio();

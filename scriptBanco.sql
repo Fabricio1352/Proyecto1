@@ -4,7 +4,6 @@
 automaticamente genere el respectivo tipo de transaccion que le corresponda, siendo 1 para las transacciones normales
  y 0 para las de con folio*/
 DELIMITER $$
-
 CREATE TRIGGER Tipo_transaccion
 AFTER INSERT ON Transaccion
 FOR EACH ROW
@@ -315,7 +314,7 @@ FOREIGN KEY  (id_transaccion) REFERENCES   Transaccion(id_transaccion)
 		tiempo = aqui  se deberia guardar el tiempo actual, con 10 minutos mas, y se valida que no hayan pasado los 10 minutos. NOW() > tiempo -> expira y se elimina
 */
 CREATE TABLE TransaccionFolioCliente(
-id_transaccion INT,
+id_transaccion INT PRIMARY KEY,
 folio_transaccion VARCHAR(255),
 password_transaccion VARCHAR(8),
 estado VARCHAR(20) DEFAULT 'no cobrado',

@@ -11,9 +11,9 @@ import objetos.Cuenta;
 import objetos.Transaccion;
 
 /**
- * Esta clase es la interfaz donde el usuario va interactuar con su cuenta y sus finanzas
- * Buscamos reutilizar codigo y hacer metodos para que  este mas limpio.
- * 
+ * Esta clase es la interfaz donde el usuario va interactuar con su cuenta y sus
+ * finanzas Buscamos reutilizar codigo y hacer metodos para que este mas limpio.
+ *
  * @author fabri
  */
 public class DlgCuentas extends javax.swing.JDialog {
@@ -22,15 +22,14 @@ public class DlgCuentas extends javax.swing.JDialog {
     private Cuenta cuenta;
     private final Control control;
 
-    
-    
     /**
-     * Inicializamos los valores del parametro.
-     * Se crean tambien componentes que se utilizaran despues
+     * Inicializamos los valores del parametro. Se crean tambien componentes que
+     * se utilizaran despues
+     *
      * @param parent parent
      * @param modal true
      * @param cliente cliente que se crea anteriormente al iniciar sesion
-     * @param cuenta Cuenta que el usuario elige 
+     * @param cuenta Cuenta que el usuario elige
      */
     public DlgCuentas(java.awt.Frame parent, boolean modal, Cliente cliente, Cuenta cuenta) {
         super(parent, modal);
@@ -168,6 +167,7 @@ public class DlgCuentas extends javax.swing.JDialog {
         );
 
         componentTablaHistorial.setVisible(false);
+        componentTablaHistorial.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 12)); // NOI18N
         componentTablaHistorial.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 componentTablaHistorialformComponentShown(evt);
@@ -175,7 +175,9 @@ public class DlgCuentas extends javax.swing.JDialog {
         });
 
         jScrollPane1.setBorder(null);
+        jScrollPane1.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 12)); // NOI18N
 
+        tablaHistorial.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 12)); // NOI18N
         tablaHistorial.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -187,6 +189,8 @@ public class DlgCuentas extends javax.swing.JDialog {
                 "Fecha", "Monto", "Transaccion"
             }
         ));
+        tablaHistorial.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        tablaHistorial.setEnabled(false);
         jScrollPane1.setViewportView(tablaHistorial);
 
         btnAceptar2.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
@@ -204,19 +208,19 @@ public class DlgCuentas extends javax.swing.JDialog {
             componentTablaHistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(componentTablaHistorialLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(componentTablaHistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, componentTablaHistorialLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnAceptar2)))
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, componentTablaHistorialLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAceptar2)
+                .addGap(22, 22, 22))
         );
         componentTablaHistorialLayout.setVerticalGroup(
             componentTablaHistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(componentTablaHistorialLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(btnAceptar2)
                 .addGap(17, 17, 17))
         );
@@ -431,40 +435,41 @@ public class DlgCuentas extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    
     /**
      * Mostrar componente de transferencias
-     * @param evt 
+     *
+     * @param evt
      */
     private void btnTransfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTransfMouseClicked
         mostrarPanelTransferencias();
     }//GEN-LAST:event_btnTransfMouseClicked
 
-
     /**
      * Evento al abrir la ventana, se crea un mensaje de bienvenida
-     * @param evt 
+     *
+     * @param evt
      */
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
 
         txtBienvenido.setText("Bienvenido " + cliente.getNombre());
     }//GEN-LAST:event_formWindowOpened
 
-
     /**
      * Evento para mostrar el historial de transacciones
-     * @param evt 
+     *
+     * @param evt
      */
     private void btnHistorialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHistorialMouseClicked
+        tablaHistorial.removeAll();
         mostrarHistorial();
         componentTablaHistorial.setVisible(true);
 
     }//GEN-LAST:event_btnHistorialMouseClicked
 
-    
     /**
      * Evento para hacer una transferencia, usando el metodo de la clase control
-     * @param evt 
+     *
+     * @param evt
      */
     private void btnAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptarMouseClicked
         if (!control.transferir(cuenta.getIdCuenta(), labelCantidad.getText(), labelDestino.getText(), cuenta.getSaldo())) {
@@ -485,26 +490,26 @@ public class DlgCuentas extends javax.swing.JDialog {
 
     /**
      * Boton para mostrar el componente de generar folios
-     * @param evt 
+     *
+     * @param evt
      */
     private void btnFolio1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFolio1MouseClicked
         mostrarPanelFolio();
     }//GEN-LAST:event_btnFolio1MouseClicked
 
-
     /**
      * Metodo para crear el componente del historial
-     * @param evt 
+     *
+     * @param evt
      */
     private void componentTablaHistorialformComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_componentTablaHistorialformComponentShown
         crearTablaHistorial();
     }//GEN-LAST:event_componentTablaHistorialformComponentShown
 
-    
-    
     /**
      * Evento default para reutilizar codigo, y mostrar el menu principal
-     * @param evt 
+     *
+     * @param evt
      */
     private void btnAceptar2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptar2MouseClicked
         mostrarDlgPrincipal();
@@ -512,7 +517,8 @@ public class DlgCuentas extends javax.swing.JDialog {
 
     /**
      * Metodo para simular un cierre de sesion
-     * @param evt 
+     *
+     * @param evt
      */
     private void cerrarSesionBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cerrarSesionBtnMouseClicked
         dispose();
@@ -520,7 +526,8 @@ public class DlgCuentas extends javax.swing.JDialog {
 
     /**
      * Metodo para actualizar a un cliente y refrescar cambios
-     * @param evt 
+     *
+     * @param evt
      */
     private void ActualizarBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ActualizarBtnMouseClicked
         control.actualizarCliente(cliente);
@@ -530,7 +537,8 @@ public class DlgCuentas extends javax.swing.JDialog {
 
     /**
      * Metodo para mostrar el componente de ajustes
-     * @param evt 
+     *
+     * @param evt
      */
     private void btnAjustesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAjustesMouseClicked
         mostrarPanelAjustes();
@@ -539,7 +547,8 @@ public class DlgCuentas extends javax.swing.JDialog {
 
     /**
      * Metodo para cancelar una cuenta
-     * @param evt 
+     *
+     * @param evt
      */
     private void cancelarCuentaBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelarCuentaBtnMouseClicked
         cuenta = control.cancelarCuenta(cuenta);
@@ -553,7 +562,8 @@ public class DlgCuentas extends javax.swing.JDialog {
 
     /**
      * Metodo para aceptar cambios y mostrar un componente
-     * @param evt 
+     *
+     * @param evt
      */
     private void btnAceptarFoliosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptarFoliosMouseClicked
         if (labelCantidadRetirar.getText().equals("")) {
@@ -567,13 +577,17 @@ public class DlgCuentas extends javax.swing.JDialog {
 
 
     private void componentPanelFoliosformComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_componentPanelFoliosformComponentShown
-
+        labelPw.setText("");
+        labelGenerarFolio.setText("");
+        labelMostrarFolio.setVisible(false);
+        labelMostrarPw.setVisible(false);
+        labelCantidadRetirar.setText("");
     }//GEN-LAST:event_componentPanelFoliosformComponentShown
 
     private void btnRegresarMenuPrincipalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegresarMenuPrincipalMouseClicked
         mostrarDlgPrincipal();
     }//GEN-LAST:event_btnRegresarMenuPrincipalMouseClicked
-   
+
     /**
      * Metodo para reutilizar codigo y mostrar un componente
      */
@@ -586,6 +600,7 @@ public class DlgCuentas extends javax.swing.JDialog {
         btnRegresarMenuPrincipal.setVisible(true);
 
     }
+
     /**
      * Metodo para reutilizar codigo y mostrar un componente
      */
@@ -602,6 +617,7 @@ public class DlgCuentas extends javax.swing.JDialog {
         btnRegresarMenuPrincipal.setVisible(false);
 
     }
+
     /**
      * Metodo para reutilizar codigo y mostrar un componente
      */
@@ -615,6 +631,7 @@ public class DlgCuentas extends javax.swing.JDialog {
         btnRegresarMenuPrincipal.setVisible(true);
 
     }
+
     /**
      * Metodo para reutilizar codigo y mostrar un componente
      */
@@ -627,6 +644,7 @@ public class DlgCuentas extends javax.swing.JDialog {
         btnRegresarMenuPrincipal.setVisible(true);
 
     }
+
     /**
      * Metodo para reutilizar codigo y mostrar un componente
      */
@@ -638,27 +656,29 @@ public class DlgCuentas extends javax.swing.JDialog {
         componentConfig.setVisible(true);
         btnRegresarMenuPrincipal.setVisible(true);
     }
+
     /**
      * Metodo para generar el folio y el password, y crear un timer
-     * 
+     *
      */
     private void mostrarFolioPw() {
-
         String cantidadRetirar = labelCantidadRetirar.getText();
-
-        if (control.crearTimerExpiracion(cantidadRetirar, cuenta.getSaldo(), cuenta) == false) {
-            labelMostrarFolio.setVisible(false);
-            labelMostrarPw.setVisible(false);
-            labelPw.setText("");
-            labelGenerarFolio.setText("");
-        } else {
-            String pw = control.getPw(Integer.parseInt(cantidadRetirar), cuenta);
-            String folio = control.getFolio(Integer.parseInt(cantidadRetirar), cuenta);
+        int result = control.crearTimerExpiracion(cantidadRetirar, cuenta.getSaldo(), cuenta);
+        if (result != -1) {
+            String pw = control.getPw(result);
+            String folio = control.getFolio(result);
             labelPw.setText(pw);
             labelGenerarFolio.setText(folio);
             labelMostrarFolio.setVisible(true);
             labelMostrarPw.setVisible(true);
             labelCantidadRetirar.setText("");
+        } else if(result == -1) {
+            labelMostrarFolio.setVisible(false);
+            labelMostrarPw.setVisible(false);
+            labelPw.setText("");
+            labelGenerarFolio.setText("");
+            labelCantidadRetirar.setText("");
+
         }
 
     }
@@ -683,12 +703,12 @@ public class DlgCuentas extends javax.swing.JDialog {
      * Metodo para crear la tabla de estado de cuentas
      */
     private void crearTablaHistorial() {
+        tablaHistorial.removeAll();
         DefaultTableModel modelTable = new DefaultTableModel();
         String ids[] = {"Transaccion ", "Fecha ", "Cantidad "};
         modelTable.setColumnIdentifiers(ids);
         tablaHistorial.setModel(modelTable);
         ArrayList<Transaccion> transacciones = control.obtenerListaTransacciones(cuenta.getIdCuenta());
-
         for (Transaccion i : transacciones) {
             modelTable.addRow(new Object[]{i.getFormatoTipoTransaccion(), i.getFechahora_transaccion(), i.getCantidad()});
         }

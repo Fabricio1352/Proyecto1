@@ -1,4 +1,3 @@
-
 package control;
 
 import dao.ClienteDAO;
@@ -57,10 +56,10 @@ public class Control {
     }
 
     /**
-     * Metodo para registrar un nuevo  cliente en la base de datos.
-     * `
+     * Metodo para registrar un nuevo cliente en la base de datos. `
+     *
      * @param frame formulario donde pide datos
-     * 
+     *
      * @return true si se pudo registrar, false caso contrario.
      */
     public boolean registrarCliente(JFrame frame) {
@@ -81,8 +80,9 @@ public class Control {
     }
 
     /**
-     * Metodo para actualizar un cliente en la base de datos, usando una instancia de DAO.
-     * 
+     * Metodo para actualizar un cliente en la base de datos, usando una
+     * instancia de DAO.
+     *
      * @param cliente cliente a actualizar.
      * @return true si se pudo editar, false caso contrario.
      */
@@ -128,10 +128,9 @@ public class Control {
         }
     }
 
-    
     /**
      * Metodo para encripar la password antes de crearla en la base de datos
-     * 
+     *
      * @param passw password creada
      * @return password encriptada
      */
@@ -159,12 +158,12 @@ public class Control {
             return passw;
         }
     }
-    
+
     /**
      * Metodo para iniciar sesion verificando el usuario en la base de datos.
-     * 
+     *
      * @param cliente cliente a verificar
-     * @return  cliente verificado
+     * @return cliente verificado
      */
     public Cliente iniciarSesion(Cliente cliente) {
 
@@ -186,12 +185,12 @@ public class Control {
 
     }
 
-    
     /**
      * Metodo para crear un ComboBoxModel y seleccionar una cuenta
+     *
      * @param cliente cliente asociado
      * @param frame frame parent
-     * @return  regresa la cuenta creado
+     * @return regresa la cuenta creado
      */
     public Cuenta seleccionarCuenta(Cliente cliente, JFrame frame) {
         Cuenta cuenta;
@@ -209,7 +208,7 @@ public class Control {
 
     /**
      * Metodo para agregar una nueva cuenta al cliente asociado.
-     * 
+     *
      * @param cliente cliente asociado
      * @return la cuenta creada
      */
@@ -222,9 +221,9 @@ public class Control {
 
     /**
      * Metodo para cancelar una cuenta
-     * 
+     *
      * @param cuenta cuenta recibida
-     * @return  true si se pudo, false caso contrario
+     * @return true si se pudo, false caso contrario
      */
     public Cuenta cancelarCuenta(Cuenta cuenta) {
         cuenta = cuentaDAO.cancelarCuenta(cuenta);
@@ -233,10 +232,10 @@ public class Control {
 
     /**
      * Metodo para hacer un retiro con folio y password
-     * 
+     *
      * @param folio folio generado
      * @param passw password generada
-     * @return  true si se pudo, false caso contrario
+     * @return true si se pudo, false caso contrario
      */
     public boolean retiroFolio(String folio, String passw) {
         boolean retiroExitoso = transaccionDAO.retiro(folio, passw);
@@ -270,29 +269,27 @@ public class Control {
     }
 
     /**
-     * Metodo auxiliar para traer una contrasena de la base de datos
+     * Metodo para obtener la password de la base de datos, mediante el
+     * identificador de cada transaccion
      *
-     * @param cantidadRetirar cantidad a retirar
-     * @param cuenta cuenta asociada
-     * @return regresa el password
+     * @param idTrans id de la transacccion
+     * @return regresa la password
      */
-    public String getPw(int cantidadRetirar, Cuenta cuenta) {
-        Transaccion t = transaccionDAO.registrarTransaccion(new Transaccion(false, cantidadRetirar, cuenta));
-        int id = t.getId_transaccion();
-        return transaccionDAO.obtenerPwTransaccionNoCliente(id);
+    public String getPw(int idTrans) {
+        return transaccionDAO.obtenerPwTransaccionNoCliente(idTrans);
+
     }
 
     /**
-     * Metodo auxiliar para traer un folio de la base de datos
+     * Metodo para obtener el folio dd la base de datos, mediante el id de la
+     * transaccion
      *
-     * @param cantidadRetirar cantidad a retirar
-     * @param cuenta cuenta de la que se desea hacer el retiro
-     * @return
+     * @param idTrans id de la transaccion
+     * @return folio
      */
-    public String getFolio(int cantidadRetirar, Cuenta cuenta) {
-        Transaccion t = transaccionDAO.registrarTransaccion(new Transaccion(false, cantidadRetirar, cuenta));
-        int id = t.getId_transaccion();
-        return transaccionDAO.obtenerFolioTransaccionNoCliente(id);
+    public String getFolio(int idTrans) {
+        return transaccionDAO.obtenerFolioTransaccionNoCliente(idTrans);
+
     }
 
     /**
@@ -341,48 +338,49 @@ public class Control {
      * tanto, decidimos dejarlo aqui
      *
      * @param cantidadRetirar cantidad a retirar
-     * @param saldo saldo 
+     * @param saldo saldo
      * @param cuenta cuenta
      * @return true // false
      */
-    public boolean crearTimerExpiracion(String cantidadRetirar, int saldo, Cuenta cuenta) {
+    public int crearTimerExpiracion(String cantidadRetirar, int saldo, Cuenta cuenta) {
         if (!regex("^\\d+$", cantidadRetirar)) {
-            return false;
-        }
+            JOptionPane.showMessageDialog(null, "Verifica los datos introducidos");
+            return -1;
+        } else {
 
-        int montoReal = Integer.parseInt(cantidadRetirar);
-        Transaccion t = transaccionDAO.registrarTransaccion(new Transaccion(false, montoReal, cuenta));
-        int idTransaccion = t.getId_transaccion();
+            int montoReal = Integer.parseInt(cantidadRetirar);
 
-        if (saldo < montoReal) {
-            JOptionPane.showMessageDialog(null, "No tienes suficiente dinero");
-            return false;
-        } else if (montoReal < 100) {
-            JOptionPane.showMessageDialog(null, "El minimo para retirar son 100 pesos");
-            return false;
-        }
-
-        TransaccionFolio trans = transFolioDao.verTransaccionFolio(idTransaccion);
-
-        Timestamp fechaHoraActual = new Timestamp(System.currentTimeMillis());
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(fechaHoraActual);
-        calendar.add(Calendar.MINUTE, 10);
-
-        Timestamp fechaHoraCon10MinutosMas = new Timestamp(calendar.getTimeInMillis());
-        trans.setTiempo(fechaHoraCon10MinutosMas);
-        transFolioDao.editarTransaccion(trans);
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-
-            @Override
-            public void run() {
-                trans.setEstado("vencido");
-                transFolioDao.editarTransaccion(trans);
+            if (saldo < montoReal) {
+                JOptionPane.showMessageDialog(null, "No tienes suficiente dinero");
+                return -1;
+            } else if (montoReal < 100) {
+                JOptionPane.showMessageDialog(null, "El minimo para retirar son 100 pesos");
+                return -1;
             }
-        }, fechaHoraCon10MinutosMas);
-        return true;
+            Transaccion t = transaccionDAO.registrarTransaccion(new Transaccion(false, montoReal, cuenta));
+            int idTransaccion = t.getId_transaccion();
+
+            TransaccionFolio trans = transFolioDao.verTransaccionFolio(idTransaccion);
+
+            Timestamp fechaHoraActual = new Timestamp(System.currentTimeMillis());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(fechaHoraActual);
+            calendar.add(Calendar.MINUTE, 10);
+
+            Timestamp fechaHoraCon10MinutosMas = new Timestamp(calendar.getTimeInMillis());
+            trans.setTiempo(fechaHoraCon10MinutosMas);
+            transFolioDao.editarTransaccion(trans);
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+
+                @Override
+                public void run() {
+                    trans.setEstado("vencido");
+                    transFolioDao.editarTransaccion(trans);
+                }
+            }, fechaHoraCon10MinutosMas);
+            return trans.getIdTransaccion();
+        }
     }
 
     /**
