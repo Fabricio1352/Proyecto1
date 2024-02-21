@@ -90,12 +90,13 @@ public class ClienteDAO implements ICliente {
 
                 updateStatement.setString(1, cliente.getNombre());
                 updateStatement.setString(2, cliente.getApellido_paterno());
-                updateStatement.setString(3, cliente.getCalle());
-                updateStatement.setString(4, cliente.getColonia());
-                updateStatement.setString(5, cliente.getCodigo_postal());
-                updateStatement.setDate(6, cliente.getFecha_nacimiento());
-                updateStatement.setString(7, cliente.getPassw());
-                updateStatement.setInt(8, cliente.getId());
+                updateStatement.setString(3, cliente.getApellido_materno());
+                updateStatement.setString(4, cliente.getCalle());
+                updateStatement.setString(5, cliente.getColonia());
+                updateStatement.setString(6, cliente.getCodigo_postal());
+                updateStatement.setDate(7, cliente.getFecha_nacimiento());
+                updateStatement.setString(8, cliente.getPassw());
+                updateStatement.setInt(9, cliente.getId());
 
                 int filasAfectadas = updateStatement.executeUpdate();
 

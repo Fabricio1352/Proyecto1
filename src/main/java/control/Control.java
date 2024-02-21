@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package control;
 
 import dao.ClienteDAO;
@@ -200,14 +197,14 @@ public class Control {
      * haciendo que con una sola instancia de control podamos acceder al dao,
      * sin tener que esta haciendo varias instancais de dao en cada clase
      *
-     * @param idOrigen
-     * @param monto
-     * @param idDestino
-     * @param saldo
-     * @return 
+     * @param idOrigen cuenta origen
+     * @param monto cantidad
+     * @param idDestino cuenta destino
+     * @param saldo saldo de la cuenta
+     * @return true si se realizo, false caso contrario
      */
     public boolean transferir(String idOrigen, String monto, String idDestino, int saldo) {
-        if (!regex("\\d", String.valueOf(monto)) || monto == null || idDestino == null) {
+        if (!regex("^\\d+$", String.valueOf(monto)) || monto == null || idDestino == null) {
             return false;
         } else {
             int monto2 = Integer.parseInt(monto);
@@ -223,9 +220,9 @@ public class Control {
     /**
      * Metodo auxiliar para traer una contrasena de la base de datos
      *
-     * @param cantidadRetirar
-     * @param cuenta
-     * @return
+     * @param cantidadRetirar cantidad a retirar
+     * @param cuenta cuenta asociada
+     * @return regresa el password
      */
     public String getPw(int cantidadRetirar, Cuenta cuenta) {
         Transaccion t = transaccionDAO.registrarTransaccion(new Transaccion(false, cantidadRetirar, cuenta));
@@ -250,8 +247,8 @@ public class Control {
      * Metodo auxiliar para actualizar los estados de cuenta, para que traiga el
      * historial de transacciones
      *
-     * @param idCuenta
-     * @return
+     * @param idCuenta id de la cuenta
+     * @return lista de transacciones
      */
     public ArrayList<Transaccion> obtenerListaTransacciones(String idCuenta) {
         return transaccionDAO.verHistorial(idCuenta);
@@ -263,8 +260,8 @@ public class Control {
      * vez que ingresas folio y pw el sistema detecta y compara la hora de
      * generacion del folio, con la hora a la que quieres sacar el dinero
      *
-     * @param folio
-     * @param passw
+     * @param folio folio generado
+     * @param passw password generada
      * @return
      */
     public boolean verificarVencimiento(String folio, String passw) {
@@ -291,21 +288,24 @@ public class Control {
      * Metodo auxiliar para expirar el tiempo, aunque terminamos no utilizandolo
      * tanto, decidimos dejarlo aqui
      *
-     * @param idTransaccion
-     * @param cantidadRetirar
-     * @param saldo
-     * @param cuenta
-     * @return
+     * @param cantidadRetirar cantidad a retirar
+     * @param saldo saldo 
+     * @param cuenta cuenta
+     * @return true // false
      */
-    public boolean crearTimerExpiracion(int cantidadRetirar, int saldo, Cuenta cuenta) {
+    public boolean crearTimerExpiracion(String cantidadRetirar, int saldo, Cuenta cuenta) {
+        if (!regex("^\\d+$", cantidadRetirar)) {
+            return false;
+        }
 
-        Transaccion t = transaccionDAO.registrarTransaccion(new Transaccion(false, cantidadRetirar, cuenta));
+        int montoReal = Integer.parseInt(cantidadRetirar);
+        Transaccion t = transaccionDAO.registrarTransaccion(new Transaccion(false, montoReal, cuenta));
         int idTransaccion = t.getId_transaccion();
 
-        if (saldo < cantidadRetirar) {
+        if (saldo < montoReal) {
             JOptionPane.showMessageDialog(null, "No tienes suficiente dinero");
             return false;
-        } else if (cantidadRetirar < 100) {
+        } else if (montoReal < 100) {
             JOptionPane.showMessageDialog(null, "El minimo para retirar son 100 pesos");
             return false;
         }
@@ -333,6 +333,13 @@ public class Control {
         return true;
     }
 
+    /**
+     * Metodo auxiliar para hacer regex mas facil
+     *
+     * @param regex expresion regular
+     * @param texto texto a verificar
+     * @return
+     */
     private boolean regex(String regex, String texto) {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(texto);
