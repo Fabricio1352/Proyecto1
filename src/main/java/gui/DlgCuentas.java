@@ -39,7 +39,7 @@ public class DlgCuentas extends javax.swing.JDialog {
         initComponents();
 
         agregarComponentes(componentTransferencia, 300, 170, 687, 415);
-        agregarComponentes(componentTablaHistorial, 300, 170, 687, 415);
+        agregarComponentes(componentTablaHistorial, 270, 170, 687, 415);
         agregarComponentes(componentPanelFolios, 350, 170, 687, 415);
         agregarComponentes(componentConfig, 450, 170, 687, 415);
 
@@ -60,7 +60,6 @@ public class DlgCuentas extends javax.swing.JDialog {
         componentTablaHistorial = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaHistorial = new javax.swing.JTable();
-        btnAceptar2 = new javax.swing.JLabel();
         componentConfig = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -193,36 +192,21 @@ public class DlgCuentas extends javax.swing.JDialog {
         tablaHistorial.setEnabled(false);
         jScrollPane1.setViewportView(tablaHistorial);
 
-        btnAceptar2.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
-        btnAceptar2.setText("Aceptar");
-        btnAceptar2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnAceptar2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnAceptar2MouseClicked(evt);
-            }
-        });
-
         javax.swing.GroupLayout componentTablaHistorialLayout = new javax.swing.GroupLayout(componentTablaHistorial);
         componentTablaHistorial.setLayout(componentTablaHistorialLayout);
         componentTablaHistorialLayout.setHorizontalGroup(
             componentTablaHistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(componentTablaHistorialLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, componentTablaHistorialLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAceptar2)
-                .addGap(22, 22, 22))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)
+                .addContainerGap())
         );
         componentTablaHistorialLayout.setVerticalGroup(
             componentTablaHistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(componentTablaHistorialLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(btnAceptar2)
-                .addGap(17, 17, 17))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         componentConfig.setVisible(false);
@@ -319,7 +303,7 @@ public class DlgCuentas extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        setMinimumSize(new java.awt.Dimension(1250, 700));
+        setMinimumSize(new java.awt.Dimension(1250, 630));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -392,7 +376,7 @@ public class DlgCuentas extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(64, 64, 64)
                 .addComponent(btnTransf, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
                 .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(165, 165, 165)
                 .addComponent(btnFolio1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -402,33 +386,33 @@ public class DlgCuentas extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(379, 379, 379)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(50, 50, 50)
-                                .addComponent(txtBienvenido, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel5)))
+                        .addGap(93, 93, 93)
+                        .addComponent(btnRegresarMenuPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(94, 94, 94)
-                        .addComponent(btnRegresarMenuPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(351, 351, 351)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(63, 63, 63)
+                                .addComponent(txtBienvenido, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(18, 18, 18)
                 .addComponent(txtBienvenido, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
-                .addGap(186, 186, 186)
+                .addGap(198, 198, 198)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnFolio1)
                     .addComponent(btnAjustes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnHistorial)
                     .addComponent(btnTransf, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(253, 253, 253)
+                .addGap(192, 192, 192)
                 .addComponent(btnRegresarMenuPrincipal)
-                .addGap(75, 75, 75))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         pack();
@@ -505,15 +489,6 @@ public class DlgCuentas extends javax.swing.JDialog {
     private void componentTablaHistorialformComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_componentTablaHistorialformComponentShown
         crearTablaHistorial();
     }//GEN-LAST:event_componentTablaHistorialformComponentShown
-
-    /**
-     * Evento default para reutilizar codigo, y mostrar el menu principal
-     *
-     * @param evt
-     */
-    private void btnAceptar2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptar2MouseClicked
-        mostrarDlgPrincipal();
-    }//GEN-LAST:event_btnAceptar2MouseClicked
 
     /**
      * Metodo para simular un cierre de sesion
@@ -636,6 +611,7 @@ public class DlgCuentas extends javax.swing.JDialog {
      * Metodo para reutilizar codigo y mostrar un componente
      */
     private void mostrarPanelTransferencias() {
+        btnTransf.setVisible(false);
         componentTransferencia.setVisible(true);
         txtSaldoActual.setText(String.valueOf(cuenta.getSaldo()));
         btnAjustes.setVisible(false);
@@ -716,7 +692,6 @@ public class DlgCuentas extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ActualizarBtn;
     private javax.swing.JLabel btnAceptar;
-    private javax.swing.JLabel btnAceptar2;
     private javax.swing.JLabel btnAceptarFolios;
     private javax.swing.JLabel btnAjustes;
     private javax.swing.JLabel btnFolio1;
