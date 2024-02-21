@@ -91,6 +91,7 @@ public class FrameInicio extends javax.swing.JFrame {
         registrarseBoton.setText("Registrarse");
         registrarseBoton.setBorderPainted(false);
         registrarseBoton.setContentAreaFilled(false);
+        registrarseBoton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         registrarseBoton.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         registrarseBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,6 +103,7 @@ public class FrameInicio extends javax.swing.JFrame {
         retiroFolioBoton.setText("Realizar retiro sin cuenta");
         retiroFolioBoton.setBorderPainted(false);
         retiroFolioBoton.setContentAreaFilled(false);
+        retiroFolioBoton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         retiroFolioBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 retiroFolioBotonActionPerformed(evt);
@@ -134,8 +136,8 @@ public class FrameInicio extends javax.swing.JFrame {
                             .addContainerGap()
                             .addComponent(retiroFolioBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                            .addGap(97, 97, 97)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(81, 81, 81)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(registrarseBoton))))
                 .addContainerGap(117, Short.MAX_VALUE))

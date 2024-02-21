@@ -1,16 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package objetos;
 
 import java.sql.Date;
 
 /**
- * La clase Cliente representa un cliente del sistema.
- * Contiene información personal como identificador, nombre, apellidos, dirección, fecha de nacimiento, contraseña y edad.
+ * La clase Cliente representa un cliente del sistema. Contiene información
+ * personal como identificador, nombre, apellidos, dirección, fecha de
+ * nacimiento, contraseña y edad.
  */
 public class Cliente {
+
     private int id; // Identificador del cliente
     private String nombre; // Nombre del cliente
     private String apellido_paterno; // Apellido paterno del cliente
@@ -23,7 +21,6 @@ public class Cliente {
     private int edad; // Edad del cliente
 
     // Constructores
-
     /**
      * Constructor de Cliente sin parámetros.
      */
@@ -31,7 +28,18 @@ public class Cliente {
     }
 
     /**
-     * Constructor de Cliente que recibe todos los atributos como parámetros.
+     * Constructor de Cliente con todos los parámetros.
+     *
+     * @param id Identificador del cliente.
+     * @param nombre Nombre del cliente.
+     * @param apellido_paterno Apellido paterno del cliente.
+     * @param apellido_materno Apellido materno del cliente.
+     * @param calle Calle de la dirección del cliente.
+     * @param colonia Colonia de la dirección del cliente.
+     * @param codigo_postal Código postal de la dirección del cliente.
+     * @param fecha_nacimiento Fecha de nacimiento del cliente.
+     * @param passw Contraseña del cliente.
+     * @param edad Edad del cliente.
      */
     public Cliente(int id, String nombre, String apellido_paterno, String apellido_materno, String calle, String colonia, String codigo_postal, Date fecha_nacimiento, String passw, int edad) {
         this.id = id;
@@ -47,7 +55,16 @@ public class Cliente {
     }
 
     /**
-     * Constructor de Cliente que recibe la información básica y la fecha de nacimiento como parámetros.
+     * Constructor de Cliente con todos los parámetros excepto el ID.
+     *
+     * @param nombre Nombre del cliente.
+     * @param apellido_paterno Apellido paterno del cliente.
+     * @param apellido_materno Apellido materno del cliente.
+     * @param calle Calle de la dirección del cliente.
+     * @param colonia Colonia de la dirección del cliente.
+     * @param codigo_postal Código postal de la dirección del cliente.
+     * @param fecha_nacimiento Fecha de nacimiento del cliente.
+     * @param passw Contraseña del cliente.
      */
     public Cliente(String nombre, String apellido_paterno, String apellido_materno, String calle, String colonia, String codigo_postal, Date fecha_nacimiento, String passw) {
         this.nombre = nombre;
@@ -61,16 +78,19 @@ public class Cliente {
     }
 
     /**
-     * Constructor de Cliente que recibe solo el ID como parámetro.
+     * Constructor de Cliente con solo el ID.
+     *
+     * @param id Identificador del cliente.
      */
     public Cliente(int id) {
         this.id = id;
     }
 
     // Getters y Setters
-
     /**
-     * Devuelve el identificador del cliente.
+     * Obtiene el identificador del cliente.
+     *
+     * @return El identificador del cliente.
      */
     public int getId() {
         return id;
@@ -78,13 +98,17 @@ public class Cliente {
 
     /**
      * Establece el identificador del cliente.
+     *
+     * @param id El identificador del cliente.
      */
     public void setId(int id) {
         this.id = id;
     }
 
     /**
-     * Devuelve el nombre del cliente.
+     * Obtiene el nombre del cliente.
+     *
+     * @return El nombre del cliente.
      */
     public String getNombre() {
         return nombre;
@@ -92,13 +116,17 @@ public class Cliente {
 
     /**
      * Establece el nombre del cliente.
+     *
+     * @param nombre El nombre del cliente.
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
     /**
-     * Devuelve el apellido paterno del cliente.
+     * Obtiene el apellido paterno del cliente.
+     *
+     * @return El apellido paterno del cliente.
      */
     public String getApellido_paterno() {
         return apellido_paterno;
@@ -106,13 +134,17 @@ public class Cliente {
 
     /**
      * Establece el apellido paterno del cliente.
+     *
+     * @param apellido_paterno El apellido paterno del cliente.
      */
     public void setApellido_paterno(String apellido_paterno) {
         this.apellido_paterno = apellido_paterno;
     }
 
     /**
-     * Devuelve el apellido materno del cliente.
+     * Obtiene el apellido materno del cliente.
+     *
+     * @return El apellido materno del cliente.
      */
     public String getApellido_materno() {
         return apellido_materno;
@@ -120,13 +152,17 @@ public class Cliente {
 
     /**
      * Establece el apellido materno del cliente.
+     *
+     * @param apellido_materno El apellido materno del cliente.
      */
     public void setApellido_materno(String apellido_materno) {
         this.apellido_materno = apellido_materno;
     }
 
     /**
-     * Devuelve la calle de la dirección del cliente.
+     * Obtiene la calle de la dirección del cliente.
+     *
+     * @return La calle de la dirección del cliente.
      */
     public String getCalle() {
         return calle;
@@ -134,13 +170,17 @@ public class Cliente {
 
     /**
      * Establece la calle de la dirección del cliente.
+     *
+     * @param calle La calle de la dirección del cliente.
      */
     public void setCalle(String calle) {
         this.calle = calle;
     }
 
     /**
-     * Devuelve la colonia de la dirección del cliente.
+     * Obtiene la colonia de la dirección del cliente.
+     *
+     * @return La colonia de la dirección del cliente.
      */
     public String getColonia() {
         return colonia;
@@ -148,13 +188,17 @@ public class Cliente {
 
     /**
      * Establece la colonia de la dirección del cliente.
+     *
+     * @param colonia La colonia de la dirección del cliente.
      */
     public void setColonia(String colonia) {
         this.colonia = colonia;
     }
 
     /**
-     * Devuelve el código postal de la dirección del cliente.
+     * Obtiene el código postal de la dirección del cliente.
+     *
+     * @return El código postal de la dirección del cliente.
      */
     public String getCodigo_postal() {
         return codigo_postal;
@@ -162,13 +206,17 @@ public class Cliente {
 
     /**
      * Establece el código postal de la dirección del cliente.
+     *
+     * @param codigo_postal El código postal de la dirección del cliente.
      */
     public void setCodigo_postal(String codigo_postal) {
         this.codigo_postal = codigo_postal;
     }
 
     /**
-     * Devuelve la fecha de nacimiento del cliente.
+     * Obtiene la fecha de nacimiento del cliente.
+     *
+     * @return La fecha de nacimiento del cliente.
      */
     public Date getFecha_nacimiento() {
         return fecha_nacimiento;
@@ -176,13 +224,17 @@ public class Cliente {
 
     /**
      * Establece la fecha de nacimiento del cliente.
+     *
+     * @param fecha_nacimiento La fecha de nacimiento del cliente.
      */
     public void setFecha_nacimiento(Date fecha_nacimiento) {
         this.fecha_nacimiento = fecha_nacimiento;
     }
 
     /**
-     * Devuelve la edad del cliente.
+     * Obtiene la edad del cliente.
+     *
+     * @return La edad del cliente.
      */
     public int getEdad() {
         return edad;
@@ -190,13 +242,17 @@ public class Cliente {
 
     /**
      * Establece la edad del cliente.
+     *
+     * @param edad La edad del cliente.
      */
     public void setEdad(int edad) {
         this.edad = edad;
     }
 
     /**
-     * Devuelve la contraseña del cliente.
+     * Obtiene la contraseña del cliente.
+     *
+     * @return La contraseña del cliente.
      */
     public String getPassw() {
         return passw;
@@ -204,15 +260,17 @@ public class Cliente {
 
     /**
      * Establece la contraseña del cliente.
+     *
+     * @param passw La contraseña del cliente.
      */
     public void setPassw(String passw) {
         this.passw = passw;
     }
 
-    // Otros métodos
-
     /**
-     * Retorna una representación en cadena del objeto Cliente.
+     * Devuelve una representación en cadena del objeto Cliente.
+     *
+     * @return La representación en cadena del objeto Cliente.
      */
     @Override
     public String toString() {

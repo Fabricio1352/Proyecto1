@@ -5,6 +5,7 @@
 package dao.interfaces;
 
 import dao.excepciones.PersistenciaException;
+import java.util.ArrayList;
 import objetos.Cuenta;
 
 /**
@@ -57,4 +58,13 @@ public interface ICuenta {
      * búsqueda.
      */
     Cuenta buscarCuenta(String id) throws PersistenciaException;
+
+    /**
+     * Metodo para buscar cuentas por el id del cliente.
+     *
+     * @param id id de cliente
+     * @return regresa las cuentas asociadas al cliente
+     * @throws dao.excepciones.PersistenciaException
+     */
+    ArrayList<Cuenta> buscarCuentaPorCliente(int id) throws PersistenciaException;
 }

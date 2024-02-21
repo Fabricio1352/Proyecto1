@@ -35,6 +35,11 @@ public class ConexionDB implements IConexion {
         this.contra = contra;
     }
 
+    /**
+     * Crea la conexion utilizando la clase Connection de JAVA
+     * @return regresa una conexion activa
+     * @throws SQLException falla la conexion
+     */
     @Override
     public Connection crearConexion() throws SQLException {
         Connection c = DriverManager.getConnection(cadenaConexion, usuario, contra);

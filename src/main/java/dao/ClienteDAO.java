@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package dao;
 
 import control.Negocio;
@@ -40,6 +37,13 @@ public class ClienteDAO implements ICliente {
         this.conexion = conexion;
     }
 
+    /**
+     * Registra un nuevo cliente en la base de datos.
+     *
+     * @param cliente El cliente a registrar.
+     * @return El cliente registrado con su ID asignado por la base de datos.
+     * @throws PersistenciaException Si ocurre un error durante la operación.
+     */
     @Override
     public Cliente registrarCliente(Cliente cliente) throws PersistenciaException {
 
@@ -77,6 +81,12 @@ public class ClienteDAO implements ICliente {
 
     }
 
+    /**
+     * Edita un cliente existente en la base de datos.
+     *
+     * @param cliente El cliente con los datos actualizados.
+     * @return El cliente con los datos actualizados.
+     */
     @Override
     public Cliente editarCliente(Cliente cliente) {
 
@@ -118,6 +128,12 @@ public class ClienteDAO implements ICliente {
         return clienteActualizado;
     }
 
+    /**
+     * Elimina un cliente de la base de datos.
+     *
+     * @param cliente El cliente a eliminar.
+     * @return El cliente eliminado.
+     */
     @Override
     public Cliente eliminarCliente(Cliente cliente) {
 
@@ -145,6 +161,12 @@ public class ClienteDAO implements ICliente {
 
     }
 
+    /**
+     * Busca un cliente en la base de datos por su ID.
+     *
+     * @param id El ID del cliente a buscar.
+     * @return El cliente encontrado, o null si no se encuentra.
+     */
     @Override
     public Cliente buscarCliente(int id) {
         String selectCliente

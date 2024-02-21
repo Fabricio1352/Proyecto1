@@ -56,6 +56,13 @@ public class Control {
 
     }
 
+    /**
+     * Metodo para registrar un nuevo  cliente en la base de datos.
+     * `
+     * @param frame formulario donde pide datos
+     * 
+     * @return true si se pudo registrar, false caso contrario.
+     */
     public boolean registrarCliente(JFrame frame) {
         Cliente cliente = new Cliente();
         Cuenta cuenta = new Cuenta();
@@ -73,6 +80,12 @@ public class Control {
         return true;
     }
 
+    /**
+     * Metodo para actualizar un cliente en la base de datos, usando una instancia de DAO.
+     * 
+     * @param cliente cliente a actualizar.
+     * @return true si se pudo editar, false caso contrario.
+     */
     public boolean actualizarCliente(Cliente cliente) {
         Cuenta cuenta = new Cuenta();
         DlgRegistro dlgRegistro;
@@ -115,6 +128,13 @@ public class Control {
         }
     }
 
+    
+    /**
+     * Metodo para encripar la password antes de crearla en la base de datos
+     * 
+     * @param passw password creada
+     * @return password encriptada
+     */
     public String encriptarPassw(String passw) {
         String contraseña = passw;
 
@@ -139,7 +159,13 @@ public class Control {
             return passw;
         }
     }
-
+    
+    /**
+     * Metodo para iniciar sesion verificando el usuario en la base de datos.
+     * 
+     * @param cliente cliente a verificar
+     * @return  cliente verificado
+     */
     public Cliente iniciarSesion(Cliente cliente) {
 
         Cliente clienteEncontrado = clienteDAO.buscarCliente(cliente.getId());
@@ -160,6 +186,13 @@ public class Control {
 
     }
 
+    
+    /**
+     * Metodo para crear un ComboBoxModel y seleccionar una cuenta
+     * @param cliente cliente asociado
+     * @param frame frame parent
+     * @return  regresa la cuenta creado
+     */
     public Cuenta seleccionarCuenta(Cliente cliente, JFrame frame) {
         Cuenta cuenta;
         DefaultComboBoxModel<String> cuentasComboBoxModel;
@@ -174,18 +207,37 @@ public class Control {
         return cuenta;
     }
 
-    public Cuenta agregarCuentaCliente(Cliente cliente) {
+    /**
+     * Metodo para agregar una nueva cuenta al cliente asociado.
+     * 
+     * @param cliente cliente asociado
+     * @return la cuenta creada
+     */
+    public Cuenta agregarCuentaCliente(Cliente cliente) throws PersistenciaException {
         cliente = clienteDAO.buscarCliente(cliente.getId());
         Cuenta cuenta = new Cuenta(1000, cliente);
         cuentaDAO.registrarCuenta(cuenta);
         return cuenta;
     }
 
+    /**
+     * Metodo para cancelar una cuenta
+     * 
+     * @param cuenta cuenta recibida
+     * @return  true si se pudo, false caso contrario
+     */
     public Cuenta cancelarCuenta(Cuenta cuenta) {
         cuenta = cuentaDAO.cancelarCuenta(cuenta);
         return cuenta;
     }
 
+    /**
+     * Metodo para hacer un retiro con folio y password
+     * 
+     * @param folio folio generado
+     * @param passw password generada
+     * @return  true si se pudo, false caso contrario
+     */
     public boolean retiroFolio(String folio, String passw) {
         boolean retiroExitoso = transaccionDAO.retiro(folio, passw);
 
@@ -310,7 +362,7 @@ public class Control {
             return false;
         }
 
-        TransaccionFolio trans = transaccionDAO.verTransaccionFolio(idTransaccion);
+        TransaccionFolio trans = transFolioDao.verTransaccionFolio(idTransaccion);
 
         Timestamp fechaHoraActual = new Timestamp(System.currentTimeMillis());
 

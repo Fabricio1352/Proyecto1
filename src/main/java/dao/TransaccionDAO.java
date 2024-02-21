@@ -1,14 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package dao;
 
 import dao.interfaces.IConexion;
 import dao.interfaces.ITransaccion;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import objetos.Cuenta;
 import objetos.Transaccion;
-import objetos.TransaccionFolio;
 
 /**
  * La clase TransaccionDAO implementa la interfaz ITransaccion y proporciona
@@ -46,7 +41,12 @@ public class TransaccionDAO implements ITransaccion {
     public TransaccionDAO(IConexion conexion) {
         this.conexion = conexion;
     }
-
+    /**
+     * Registra una nueva transacción en el sistema.
+     *
+     * @param t La transacción a ser registrada.
+     * @return La transacción registrada.
+     */
     @Override
     public Transaccion registrarTransaccion(Transaccion t) {
         ResultSet rs;
@@ -68,11 +68,10 @@ public class TransaccionDAO implements ITransaccion {
 
                 rs = st.getGeneratedKeys();
 
-                if (rs.next()) { // no se porque es necesario la verificacion
+                if (rs.next()) { 
                     int idGenerado = rs.getInt(1);
                     tr.setId_transaccion(idGenerado);
                 }
-                //columna uno
 
             }
 
@@ -83,13 +82,24 @@ public class TransaccionDAO implements ITransaccion {
         return tr;
     }
 
+        /**
+     * Edita la información de una transacción existente en el sistema.
+     *
+     * @param t La transacción con la información actualizada.
+     * @return La transacción con la información actualizada.
+     */
     @Override
     public Transaccion editarTransaccion(Transaccion t) {
         Logger.getLogger(TransaccionDAO.class.getName()).log(Level.SEVERE, "No puedes editar transacciones ...");
         return null;
 
     }
-
+    /**
+     * Elimina una transacción existente del sistema.
+     *
+     * @param t La transacción a ser eliminada.
+     * @return La transacción eliminada.
+     */
     @Override
     public Transaccion eliminarTransaccion(Transaccion t) {
         String deleteTransaccion = "DELETE FROM transaccion WHERE id_transaccion = ?";
@@ -117,7 +127,12 @@ public class TransaccionDAO implements ITransaccion {
         return transaccionEliminada;
 
     }
-
+    /**
+     * Obtiene y retorna una transacción del sistema basada en su identificador.
+     *
+     * @param id El identificador de la transacción a buscar.
+     * @return La transacción encontrada.
+     */
     @Override
     public Transaccion verTransaccion(int id) {
 
@@ -156,45 +171,14 @@ public class TransaccionDAO implements ITransaccion {
         }
         return transaccionEncontrada;
     }
-    
-    
-    
-    
-    
-    
-    
-    
 
-    public TransaccionFolio verTransaccionFolio(int id) {
-        String select = "SELECT * FROM transaccionfoliocliente WHERE id_transaccion = ?";
-        TransaccionFolio tEncontrada = null;
 
-        try {
-            Connection c = conexion.crearConexion();
-            PreparedStatement selectStatement = c.prepareStatement(select);
-
-            selectStatement.setInt(1, id);
-            ResultSet resultSet = selectStatement.executeQuery();
-
-            if (resultSet.next()) {
-                tEncontrada = new TransaccionFolio();
-                tEncontrada.setIdTransaccion(resultSet.getInt("id_transaccion"));
-                tEncontrada.setEstado(resultSet.getString("estado"));
-                tEncontrada.setPasswordTransaccion("password_transaccion");
-                tEncontrada.setFolioTransaccion("folio_transaccion");
-                tEncontrada.setTiempo(resultSet.getTimestamp("tiempo"));
-                
-                
-
-            }
-
-        } catch (SQLException e) {
-            Logger.getLogger(CuentaDAO.class.getName()).log(Level.SEVERE, "Error en la operacion, verifica los datos", e);
-
-        }
-        return tEncontrada;
-    }
-
+    /**
+     * Metodo para llamar al procedimiento historial de la base de datos
+     * 
+     * @param id id a buscar
+     * @return  lista de transacciones
+     */
     public ArrayList<Transaccion> verHistorial(String id) {
         ArrayList<Transaccion> transacciones = new ArrayList<>();
         try {
@@ -202,13 +186,11 @@ public class TransaccionDAO implements ITransaccion {
             String verHistorialState = "{CALL verHistorial(?)}";
             CallableStatement callableStatement = con.prepareCall(verHistorialState);
             callableStatement.setString(1, id);
-//            ResultSet resultSet = callableStatement.executeQuery();
             boolean results = callableStatement.execute();
 
             while (results) {
                 ResultSet resultSet = callableStatement.getResultSet();
                 while (resultSet.next()) {
-                    // int idTransaccion = resultSet.getInt("Id");
                     Timestamp fechaTransaccion = resultSet.getTimestamp("Fecha");
                     int monto = resultSet.getInt("Monto");
                     String tipoTransaccion = resultSet.getString("Tipo de Transacción");
@@ -253,24 +235,11 @@ public class TransaccionDAO implements ITransaccion {
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    // ya estan en procedure
-
+    /**
+     * Metodo para obtener el password en un retiro sin cliente destino asociado
+     * @param idTransaccion id de la transaccion
+     * @return password
+     */
     public String obtenerPwTransaccionNoCliente(int idTransaccion) {
         String selectTransaccion
                 = "SELECT password_transaccion FROM transaccionfoliocliente WHERE id_transaccion = ?";
@@ -294,6 +263,13 @@ public class TransaccionDAO implements ITransaccion {
 
     }
 
+    
+    /**
+     * Metodo para obtener el folio de un retiro sin cuenta, de la base de datos
+     * 
+     * @param idTransaccion id de la transaccion
+     * @return folio
+     */
     public String obtenerFolioTransaccionNoCliente(int idTransaccion) {
         String selectTransaccion
                 = "SELECT folio_transaccion FROM transaccionfoliocliente WHERE id_transaccion = ?";
