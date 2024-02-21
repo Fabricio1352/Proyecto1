@@ -140,9 +140,6 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="labelDestinoActionPerformed"/>
           </Events>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="labelDestino.setBackground(new Color(176, 186, 195));"/>
-          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

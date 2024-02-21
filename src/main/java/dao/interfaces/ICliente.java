@@ -1,15 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
+
 package dao.interfaces;
 
 import dao.excepciones.PersistenciaException;
 import objetos.Cliente;
 
 /**
+ * 
  * La interfaz ICliente define las operaciones que pueden ser realizadas sobre objetos Cliente.
  * Estas operaciones incluyen el registro, edición, eliminación y búsqueda de clientes en un sistema.
+ * 
  */
 public interface ICliente {
 

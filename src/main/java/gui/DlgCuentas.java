@@ -112,7 +112,6 @@ public class DlgCuentas extends javax.swing.JDialog {
 
         labelDestino.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 14)); // NOI18N
         labelDestino.setBorder(null);
-        labelDestino.setBackground(new Color(176, 186, 195));
         labelDestino.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 labelDestinoActionPerformed(evt);

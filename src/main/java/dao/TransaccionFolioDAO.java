@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package dao;
 
 import dao.interfaces.IConexion;
@@ -18,7 +15,8 @@ import objetos.Transaccion;
 import objetos.TransaccionFolio;
 
 /**
- *
+ * Data Access Object de la entidad transaccionFolio
+ * 
  * @author fabri
  */
 public class TransaccionFolioDAO {
@@ -29,6 +27,13 @@ public class TransaccionFolioDAO {
         this.conexion = conexion;
     }
 
+    /**
+     * Metodo para buscar una transaccion mediante el folio generado y el pw
+     * 
+     * @param folio folio existente
+     * @param pw password existente
+     * @return regresa la transaccion
+     */
     public TransaccionFolio buscarTransaccionPorFolioPw(String folio, String pw) {
         String select = "SELECT * FROM transaccionfoliocliente WHERE folio_transaccion = ? AND password_transaccion = ?";
         TransaccionFolio tEncontrada = null;
@@ -57,6 +62,14 @@ public class TransaccionFolioDAO {
         return tEncontrada;
     }
 
+    
+    /**
+     * Metodo para ver la transaccion especifica que haya sido mediante uso de folio y pw solamente
+     * 
+     * 
+     * @param id id transaccion
+     * @return  regresa la transaccion
+     */
     public TransaccionFolio verTransaccionFolio(int id) {
         String select = "SELECT * FROM transaccionfoliocliente WHERE id_transaccion = ?";
         TransaccionFolio tEncontrada = null;
@@ -85,6 +98,13 @@ public class TransaccionFolioDAO {
         return tEncontrada;
     }
 
+    
+    /**
+     * Metodo para ver el historial de transacciones, utilizando el procedure 'verHistoria'
+     * 
+     * @param id id de la cuenta asociada
+     * @return regresa la lista de transacciones
+     */
     public ArrayList<Transaccion> verHistorial(String id) {
         ArrayList<Transaccion> transacciones = new ArrayList<>();
         try {
@@ -117,6 +137,14 @@ public class TransaccionFolioDAO {
         return transacciones;
     }
 
+    
+    /**
+     * Metodo para editar una transaccion de tipo 'Folio' (sin cuenta asociada)
+     * Lo unico editable, es el estado, se utilizara internamente para la logica de cobrado, no cobrado y vencido
+     * 
+     * @param t transaccion
+     * @return regresa la transaccion
+     */
     public TransaccionFolio editarTransaccion(TransaccionFolio t) {
         String editarTrans = "UPDATE transaccionfoliocliente SET estado = ?, tiempo = ? WHERE id_transaccion = ?";
 

@@ -1,13 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package control;
 
 import dao.ClienteDAO;
 import dao.ConexionDB;
 import dao.CuentaDAO;
-import dao.TransaccionDAO;
 import dao.interfaces.IConexion;
 import objetos.Cliente;
 import objetos.Cuenta;

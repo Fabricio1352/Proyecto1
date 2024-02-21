@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package control;
 
 import java.util.List;
@@ -14,7 +11,7 @@ public class Conversiones {
  * La clase Conversiones proporciona métodos para realizar conversiones y
  * manipular datos. Este método convierte una lista de objetos Cuenta en un
  * modelo de combobox. Cada elemento del combobox corresponde al identificador
- * de una cuenta. El método devuelve un DefaultComboBoxModel<String> que puede
+ * de una cuenta. El método devuelve un DefaultComboBoxModel que puede
  * ser utilizado para configurar un componente JComboBox en la interfaz de
  * usuario.
  *
@@ -22,7 +19,7 @@ public class Conversiones {
  *
  * @param listaCuentas La lista de cuentas que se desea convertir en el modelo
  * de combobox.
- * @return Un DefaultComboBoxModel<String> que contiene los identificadores de
+ * @return Un DefaultComboBoxModel que contiene los identificadores de
  * las cuentas.
  */
     public DefaultComboBoxModel<String> cuentasComboBoxModel(List<Cuenta> listaCuentas) {
