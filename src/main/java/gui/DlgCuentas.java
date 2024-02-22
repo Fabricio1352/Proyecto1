@@ -38,8 +38,7 @@ public class DlgCuentas extends javax.swing.JDialog {
         this.cuenta = cuenta;
         control = new Control();
         initComponents();
-btnActualizar.setVisible(false);
-        agregarComponentes(componentTransferencia, 300, 170, 687, 415);
+        agregarComponentes(componentTransferencia, 320, 110, 687, 415);
         agregarComponentes(componentTablaHistorial, 270, 100, 687, 415);
         agregarComponentes(componentPanelFolios, 350, 170, 687, 415);
         agregarComponentes(componentConfig, 450, 170, 687, 415);
@@ -67,8 +66,8 @@ btnActualizar.setVisible(false);
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         cerrarSesionBtn = new javax.swing.JLabel();
-        cancelarCuentaBtn = new javax.swing.JLabel();
         ActualizarBtn = new javax.swing.JLabel();
+        cancelarCuentaBtn = new javax.swing.JLabel();
         componentPanelFolios = new javax.swing.JPanel();
         labelPw = new javax.swing.JLabel();
         btnAceptarFolios = new javax.swing.JLabel();
@@ -111,7 +110,6 @@ btnActualizar.setVisible(false);
 
         labelCantidad.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 14)); // NOI18N
         labelCantidad.setBorder(null);
-        labelCantidad.setBackground(new Color(176, 186, 195));
 
         labelDestino.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 14)); // NOI18N
         labelDestino.setBorder(null);
@@ -126,25 +124,25 @@ btnActualizar.setVisible(false);
         componentTransferenciaLayout.setHorizontalGroup(
             componentTransferenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(componentTransferenciaLayout.createSequentialGroup()
-                .addGroup(componentTransferenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(componentTransferenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, componentTransferenciaLayout.createSequentialGroup()
-                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4))
-                        .addGroup(componentTransferenciaLayout.createSequentialGroup()
-                            .addGap(70, 70, 70)
-                            .addComponent(jLabel7)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, componentTransferenciaLayout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jLabel6)))
-                .addGap(40, 40, 40)
                 .addGroup(componentTransferenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(labelDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSaldoActual, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAceptar)
                     .addGroup(componentTransferenciaLayout.createSequentialGroup()
-                        .addComponent(btnAceptar)
-                        .addGap(54, 54, 54)))
+                        .addGroup(componentTransferenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(componentTransferenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, componentTransferenciaLayout.createSequentialGroup()
+                                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel4))
+                                .addGroup(componentTransferenciaLayout.createSequentialGroup()
+                                    .addGap(70, 70, 70)
+                                    .addComponent(jLabel7)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, componentTransferenciaLayout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addComponent(jLabel6)))
+                        .addGap(40, 40, 40)
+                        .addGroup(componentTransferenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(labelDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSaldoActual, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
         componentTransferenciaLayout.setVerticalGroup(
@@ -162,9 +160,9 @@ btnActualizar.setVisible(false);
                 .addGroup(componentTransferenciaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(labelDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addComponent(btnAceptar)
-                .addGap(32, 32, 32))
+                .addGap(35, 35, 35))
         );
 
         componentTablaHistorial.setVisible(false);
@@ -179,7 +177,7 @@ btnActualizar.setVisible(false);
         jScrollPane1.setBorder(null);
         jScrollPane1.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 12)); // NOI18N
 
-        tablaHistorial.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 12)); // NOI18N
+        tablaHistorial.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         tablaHistorial.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -216,8 +214,8 @@ btnActualizar.setVisible(false);
                 .addGap(15, 15, 15)
                 .addComponent(jTipoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         componentConfig.setVisible(false);
@@ -229,7 +227,7 @@ btnActualizar.setVisible(false);
 
         jLabel2.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 17)); // NOI18N
         jLabel2.setText("Numero de cuenta: "+cuenta.getIdCuenta());
-        componentConfig.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 270, -1));
+        componentConfig.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 330, -1));
 
         jLabel3.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 17)); // NOI18N
         jLabel3.setText("Propietario: "+cliente.getNombre()+" "+cliente.getApellido_paterno()+" "+cliente.getApellido_materno());
@@ -246,16 +244,6 @@ btnActualizar.setVisible(false);
         });
         componentConfig.add(cerrarSesionBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 250, -1, -1));
 
-        cancelarCuentaBtn.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 17)); // NOI18N
-        cancelarCuentaBtn.setText("Cancelar cuenta");
-        cancelarCuentaBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        cancelarCuentaBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                cancelarCuentaBtnMouseClicked(evt);
-            }
-        });
-        componentConfig.add(cancelarCuentaBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 210, -1, -1));
-
         ActualizarBtn.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 17)); // NOI18N
         ActualizarBtn.setText("Actualizar Datos");
         ActualizarBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -265,6 +253,16 @@ btnActualizar.setVisible(false);
             }
         });
         componentConfig.add(ActualizarBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, -1, -1));
+
+        cancelarCuentaBtn.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 17)); // NOI18N
+        cancelarCuentaBtn.setText("Cancelar cuenta");
+        cancelarCuentaBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cancelarCuentaBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cancelarCuentaBtnMouseClicked(evt);
+            }
+        });
+        componentConfig.add(cancelarCuentaBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 210, -1, -1));
 
         componentPanelFolios.setVisible(false);
         componentPanelFolios.addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -380,11 +378,11 @@ btnActualizar.setVisible(false);
             }
         });
 
+        btnActualizar.setVisible(false);
         btnActualizar.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 27)); // NOI18N
         btnActualizar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnActualizar.setText("Actualizar");
         btnActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnRegresarMenuPrincipal.setVisible(false);
         btnActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnActualizarMouseClicked(evt);
@@ -395,31 +393,32 @@ btnActualizar.setVisible(false);
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(351, 351, 351)
-                .addComponent(jLabel5)
-                .addContainerGap(352, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtBienvenido, javax.swing.GroupLayout.PREFERRED_SIZE, 706, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(64, 64, 64)
-                        .addComponent(btnTransf, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
-                        .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(165, 165, 165)
-                        .addComponent(btnFolio1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtBienvenido, javax.swing.GroupLayout.PREFERRED_SIZE, 706, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnRegresarMenuPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(114, 114, 114))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnTransf, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
+                                .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(165, 165, 165)
+                                .addComponent(btnFolio1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(137, 137, 137)
                 .addComponent(btnAjustes, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34))
             .addGroup(layout.createSequentialGroup()
-                .addGap(93, 93, 93)
-                .addComponent(btnRegresarMenuPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65))
+                .addGap(351, 351, 351)
+                .addComponent(jLabel5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -434,11 +433,15 @@ btnActualizar.setVisible(false);
                     .addComponent(btnAjustes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnHistorial)
                     .addComponent(btnTransf, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(192, 192, 192)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRegresarMenuPrincipal)
-                    .addComponent(btnActualizar))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(192, 192, 192)
+                        .addComponent(btnActualizar)
+                        .addContainerGap(32, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRegresarMenuPrincipal)
+                        .addGap(47, 47, 47))))
         );
 
         pack();
@@ -590,13 +593,13 @@ btnActualizar.setVisible(false);
     }//GEN-LAST:event_btnRegresarMenuPrincipalMouseClicked
 
     private void btnActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActualizarMouseClicked
-        if (jTipoComboBox.getSelectedItem()=="Todas") {
+        if (jTipoComboBox.getSelectedItem() == "Todas") {
             crearTablaHistorial();
         }
-        if (jTipoComboBox.getSelectedItem()=="Retiros") {
+        if (jTipoComboBox.getSelectedItem() == "Retiros") {
             crearTablaRetiros(control.obtenerListaretiros(cuenta.getIdCuenta()));
         }
-        if (jTipoComboBox.getSelectedItem()=="Transferencias") {
+        if (jTipoComboBox.getSelectedItem() == "Transferencias") {
             crearTablaTransferencias(control.obtenerListaTransferencias(cuenta.getIdCuenta()));
         }
     }//GEN-LAST:event_btnActualizarMouseClicked
@@ -612,6 +615,8 @@ btnActualizar.setVisible(false);
         btnAjustes.setVisible(false);
         btnActualizar.setVisible(false);
         btnRegresarMenuPrincipal.setVisible(true);
+        jLabel5.setVisible(false);
+        txtBienvenido.setVisible(false);
 
     }
 
@@ -623,8 +628,8 @@ btnActualizar.setVisible(false);
         componentTransferencia.setVisible(false);
         componentPanelFolios.setVisible(false);
         componentConfig.setVisible(false);
-        txtBienvenido.setVisible(false);
-        jLabel5.setVisible(false);
+        txtBienvenido.setVisible(true);
+        jLabel5.setVisible(true);
         btnTransf.setVisible(true);
         btnFolio1.setVisible(true);
         btnHistorial.setVisible(true);
@@ -697,7 +702,7 @@ btnActualizar.setVisible(false);
             labelMostrarFolio.setVisible(true);
             labelMostrarPw.setVisible(true);
             labelCantidadRetirar.setText("");
-        } else if(result == -1) {
+        } else if (result == -1) {
             labelMostrarFolio.setVisible(false);
             labelMostrarPw.setVisible(false);
             labelPw.setText("");
@@ -734,37 +739,42 @@ btnActualizar.setVisible(false);
         modelTable.setColumnIdentifiers(ids);
         tablaHistorial.setModel(modelTable);
         ArrayList<Transaccion> transacciones = control.obtenerListaTransacciones(cuenta.getIdCuenta());
+
         for (Transaccion i : transacciones) {
             modelTable.addRow(new Object[]{i.getFormatoTipoTransaccion(), i.getFechahora_transaccion(), i.getCantidad()});
         }
     }
+
     /**
-     * Metodo crea tabla cuando en el combobox es seleccionada la opcion de retiros
+     * Metodo crea tabla cuando en el combobox es seleccionada la opcion de
+     * retiros
+     *
      * @param retiros lista de retiros ya sea ordenada o por periodo(pendiente)
      */
-    private void crearTablaRetiros(ArrayList<TransaccionFolio> retiros){
-    tablaHistorial.removeAll();
-    DefaultTableModel modelTable = new DefaultTableModel();
+    private void crearTablaRetiros(ArrayList<TransaccionFolio> retiros) {
+        tablaHistorial.removeAll();
+        DefaultTableModel modelTable = new DefaultTableModel();
         String ids[] = {"Transaccion ", "Fecha ", "Cantidad ", "Estado "};
         modelTable.setColumnIdentifiers(ids);
         tablaHistorial.setModel(modelTable);
-        
-        ArrayList<TransaccionFolio> retirosMostrar=retiros;
-        for (TransaccionFolio i:retirosMostrar) {
-             modelTable.addRow(new Object[]{i.getFormatoTipoTransaccion(), i.getFechahora_transaccion(), i.getCantidad(),i.getEstado()});
+
+        ArrayList<TransaccionFolio> retirosMostrar = retiros;
+        for (TransaccionFolio i : retirosMostrar) {
+            modelTable.addRow(new Object[]{i.getFormatoTipoTransaccion(), i.getFechahora_transaccion(), i.getCantidad(), i.getEstado()});
         }
     }
-    private void crearTablaTransferencias(ArrayList<Transaccion> transferencias){
-    tablaHistorial.removeAll();
-     DefaultTableModel modelTable = new DefaultTableModel();
+
+    private void crearTablaTransferencias(ArrayList<Transaccion> transferencias) {
+        tablaHistorial.removeAll();
+        DefaultTableModel modelTable = new DefaultTableModel();
         String ids[] = {"Transaccion ", "Fecha ", "Cantidad "};
         modelTable.setColumnIdentifiers(ids);
         tablaHistorial.setModel(modelTable);
-         for (Transaccion i : transferencias) {
+        for (Transaccion i : transferencias) {
             modelTable.addRow(new Object[]{i.getFormatoTipoTransaccion(), i.getFechahora_transaccion(), i.getCantidad()});
         }
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ActualizarBtn;
     private javax.swing.JLabel btnAceptar;
