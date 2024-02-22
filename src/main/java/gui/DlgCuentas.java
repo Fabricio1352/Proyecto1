@@ -61,6 +61,10 @@ public class DlgCuentas extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaHistorial = new javax.swing.JTable();
         jTipoComboBox = new javax.swing.JComboBox<>();
+        desdeDateChooser = new com.toedter.calendar.JDateChooser();
+        hastaDateChooser = new com.toedter.calendar.JDateChooser();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         componentConfig = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -194,25 +198,52 @@ public class DlgCuentas extends javax.swing.JDialog {
         jScrollPane1.setViewportView(tablaHistorial);
 
         jTipoComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas", "Transferencias", "Retiros" }));
+        jTipoComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTipoComboBoxActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel9.setText("Desde");
+
+        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel10.setText("Hasta");
 
         javax.swing.GroupLayout componentTablaHistorialLayout = new javax.swing.GroupLayout(componentTablaHistorial);
         componentTablaHistorial.setLayout(componentTablaHistorialLayout);
         componentTablaHistorialLayout.setHorizontalGroup(
             componentTablaHistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(componentTablaHistorialLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)
+                .addGroup(componentTablaHistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(componentTablaHistorialLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE))
+                    .addGroup(componentTablaHistorialLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jTipoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel9)
+                        .addGap(18, 18, 18)
+                        .addComponent(desdeDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(hastaDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(componentTablaHistorialLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jTipoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         componentTablaHistorialLayout.setVerticalGroup(
             componentTablaHistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, componentTablaHistorialLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jTipoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(componentTablaHistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(componentTablaHistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(componentTablaHistorialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTipoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9))
+                        .addComponent(desdeDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel10)
+                    .addComponent(hastaDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(31, Short.MAX_VALUE))
@@ -593,7 +624,7 @@ public class DlgCuentas extends javax.swing.JDialog {
     }//GEN-LAST:event_btnRegresarMenuPrincipalMouseClicked
 
     private void btnActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActualizarMouseClicked
-        if (jTipoComboBox.getSelectedItem() == "Todas") {
+       if (jTipoComboBox.getSelectedItem() == "Todas") {
             crearTablaHistorial();
         }
         if (jTipoComboBox.getSelectedItem() == "Retiros") {
@@ -602,7 +633,20 @@ public class DlgCuentas extends javax.swing.JDialog {
         if (jTipoComboBox.getSelectedItem() == "Transferencias") {
             crearTablaTransferencias(control.obtenerListaTransferencias(cuenta.getIdCuenta()));
         }
+        if (jTipoComboBox.getSelectedItem()=="Todas"&& desdeDateChooser.getDate()!=null&&hastaDateChooser.getDate()!=null) {
+            crearTablaTransferencias(control.obtenerListaTransferenciasPeriodo(cuenta.getIdCuenta(), desdeDateChooser.getDate(), hastaDateChooser.getDate()));
+        }
+         if (jTipoComboBox.getSelectedItem()=="Transferencias"&& desdeDateChooser.getDate()!=null&&hastaDateChooser.getDate()!=null) {
+            crearTablaTransferencias(control.obtenerListaTransPeriodo(cuenta.getIdCuenta(), desdeDateChooser.getDate(), hastaDateChooser.getDate()));
+        }
+            if (jTipoComboBox.getSelectedItem()=="Retiros"&& desdeDateChooser.getDate()!=null&&hastaDateChooser.getDate()!=null) {
+            crearTablaRetiros(control.obtenerListaretirosPeriodo(cuenta.getIdCuenta(), desdeDateChooser.getDate(), hastaDateChooser.getDate()));
+        }
     }//GEN-LAST:event_btnActualizarMouseClicked
+
+    private void jTipoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTipoComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTipoComboBoxActionPerformed
 
     /**
      * Metodo para reutilizar codigo y mostrar un componente
@@ -791,7 +835,10 @@ public class DlgCuentas extends javax.swing.JDialog {
     private javax.swing.JPanel componentPanelFolios;
     private javax.swing.JPanel componentTablaHistorial;
     private javax.swing.JPanel componentTransferencia;
+    private com.toedter.calendar.JDateChooser desdeDateChooser;
+    private com.toedter.calendar.JDateChooser hastaDateChooser;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -799,6 +846,7 @@ public class DlgCuentas extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox<String> jTipoComboBox;
     private javax.swing.JTextField labelCantidad;

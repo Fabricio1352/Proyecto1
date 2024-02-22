@@ -350,6 +350,11 @@ public class Control {
         Timestamp tsHasta = new Timestamp(hasta.getTime());
           return transFolioDao.verHistorialTransaccionPeriodo(idCuenta, tsDesde, tsHasta);
     }
+         public ArrayList<TransaccionFolio> obtenerListaretirosPeriodo(String idCuenta,Date desde,Date hasta) {
+           Timestamp tsDesde = new Timestamp(desde.getTime());
+        Timestamp tsHasta = new Timestamp(hasta.getTime());
+        return transFolioDao.verHistorialRetirosPeriodo(idCuenta, tsDesde, tsHasta);
+    }
     /**
      * Metodo PRINCIPAL para verificar que las tareas esten vencidas o no, cada
      * vez que ingresas folio y pw el sistema detecta y compara la hora de

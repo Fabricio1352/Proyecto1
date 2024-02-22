@@ -131,6 +131,34 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
+
+CREATE PROCEDURE verHistorialRetirosPeriodo(
+    IN id VARCHAR(16),
+    IN desde TIMESTAMP,
+    IN hasta TIMESTAMP
+)
+BEGIN
+    SELECT
+        t.fecha_hora_transaccion AS 'Fecha',
+        t.cantidad AS 'Monto', 
+        tsf.estado AS 'Estado',
+        CASE 
+            WHEN t.tipo_transaccion = 0 THEN 'Retiro'
+            WHEN t.tipo_transaccion = 1 THEN 'Transferencia'
+        END AS 'Tipo de Transacción'
+    FROM 
+        transaccion t
+    JOIN transaccionfoliocliente tsf ON t.id_transaccion = tsf.id_transaccion
+    WHERE 
+        t.id_cuenta = id
+        AND t.fecha_hora_transaccion BETWEEN desde AND hasta
+    ORDER BY
+        t.fecha_hora_transaccion DESC;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
 CREATE PROCEDURE verHistorialPeriodo(
     IN id_cuenta VARCHAR(16),
     IN desde TIMESTAMP,

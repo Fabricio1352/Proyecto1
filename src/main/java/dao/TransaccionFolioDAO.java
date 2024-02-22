@@ -171,6 +171,43 @@ public class TransaccionFolioDAO {
         }
         return transacciones;
     }
+    /**
+     * Metodo genera una lista de retiros que se dan en un periodo
+     * @param id
+     * @param desde
+     * @param hasta
+     * @return lista de retiros
+     */
+    public ArrayList<TransaccionFolio> verHistorialRetirosPeriodo(String id,Timestamp desde, Timestamp hasta) {
+        ArrayList<TransaccionFolio> transacciones = new ArrayList<>();
+        try {
+            Connection con = conexion.crearConexion();
+            String verHistorialState = "{CALL verHistorialRetirosPeriodo(?,?,?)}";
+            CallableStatement callableStatement = con.prepareCall(verHistorialState);
+            callableStatement.setString(1, id);
+            callableStatement.setTimestamp(2, desde);
+            callableStatement.setTimestamp(3, hasta);
+            boolean results = callableStatement.execute();
+            while (results) {
+                ResultSet resultSet = callableStatement.getResultSet();
+                while (resultSet.next()) {
+                    // int idTransaccion = resultSet.getInt("Id");
+                    Timestamp fechaTransaccion = resultSet.getTimestamp("Fecha");
+                    int monto = resultSet.getInt("Monto");
+                    String tipoTransaccion = resultSet.getString("Tipo de Transacción");
+                    String estado = resultSet.getString("Estado");
+                    TransaccionFolio transaccion = new TransaccionFolio(fechaTransaccion, tipoTransaccion, monto, estado);
+                    transacciones.add(transaccion);
+
+                }
+                results = callableStatement.getMoreResults();
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TransaccionFolioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return transacciones;
+    }
 
     /**
      * Metodo que guarda en una lista transferencias cuyo tipo de transaccion
