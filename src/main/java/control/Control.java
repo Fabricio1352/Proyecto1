@@ -20,6 +20,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;
@@ -323,6 +324,31 @@ public class Control {
    public ArrayList<Transaccion> obtenerListaTransferencias(String idCuenta) {
         return transFolioDao.verHistorialTransaccion(idCuenta);
         
+    }
+   /**
+    * Metodo auxiliar para actualizar estados de cuenta, regresa las transaferencias 
+    * de un periodo especifico
+    * @param idCuenta
+    * @return lista de treansferencia
+    */
+    public ArrayList<Transaccion> obtenerListaTransferenciasPeriodo(String idCuenta,Date desde,Date hasta) {
+        Timestamp tsDesde = new Timestamp(desde.getTime());
+        Timestamp tsHasta = new Timestamp(hasta.getTime());
+        return transFolioDao.verHistorialTransferenciaPeriodo(idCuenta, tsDesde, tsHasta);
+         
+    }
+    /**
+     * Metodo auxiliar para actualizar estados de cuenta, regresa transacciones de 
+     * un periodo especifico
+     * @param idCuenta
+     * @param desde
+     * @param hasta
+     * @return 
+     */
+        public ArrayList<Transaccion> obtenerListaTransPeriodo(String idCuenta,Date desde,Date hasta) {
+        Timestamp tsDesde = new Timestamp(desde.getTime());
+        Timestamp tsHasta = new Timestamp(hasta.getTime());
+          return transFolioDao.verHistorialTransaccionPeriodo(idCuenta, tsDesde, tsHasta);
     }
     /**
      * Metodo PRINCIPAL para verificar que las tareas esten vencidas o no, cada

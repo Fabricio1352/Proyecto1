@@ -1,4 +1,4 @@
-
+USE banco;
 
 /*Trigger que funciona para que cada que se inserte una transaccion, dependiendo si su tipo es 0 o 1, 
 automaticamente genere el respectivo tipo de transaccion que le corresponda, siendo 1 para las transacciones normales
@@ -128,9 +128,31 @@ CASE
         t.fecha_hora_transaccion 
         DESC;
 END$$
-DELIMITER;
+DELIMITER ;
 
+DELIMITER $$
+CREATE PROCEDURE verHistorialPeriodo(
+    IN id_cuenta VARCHAR(16),
+    IN desde TIMESTAMP,
+    IN hasta TIMESTAMP
+)
+BEGIN
+    SELECT
+        id_transaccion AS 'Id',
+		fecha_hora_transaccion AS 'Fecha',
+        cantidad AS 'Monto',
+        CASE 
+           		WHEN tipo_transaccion = 0 THEN 'Retiro'
+                WHEN tipo_transaccion = 1 THEN 'Transferencia'
+        END AS 'Tipo de Transacción'
+    FROM
+        transaccion
+    WHERE 
+        id_cuenta = id_cuenta
+        AND fecha_hora_transaccion BETWEEN desde AND hasta;
+END$$ 
 
+DELIMITER ;
 
 /*
 	Trigger para calcular la edad cuando se inserte un cliente

@@ -1,4 +1,3 @@
-
 package dao;
 
 import dao.interfaces.IConexion;
@@ -16,7 +15,7 @@ import objetos.TransaccionFolio;
 
 /**
  * Data Access Object de la entidad transaccionFolio
- * 
+ *
  * @author fabri
  */
 public class TransaccionFolioDAO {
@@ -29,7 +28,7 @@ public class TransaccionFolioDAO {
 
     /**
      * Metodo para buscar una transaccion mediante el folio generado y el pw
-     * 
+     *
      * @param folio folio existente
      * @param pw password existente
      * @return regresa la transaccion
@@ -62,13 +61,13 @@ public class TransaccionFolioDAO {
         return tEncontrada;
     }
 
-    
     /**
-     * Metodo para ver la transaccion especifica que haya sido mediante uso de folio y pw solamente
-     * 
-     * 
+     * Metodo para ver la transaccion especifica que haya sido mediante uso de
+     * folio y pw solamente
+     *
+     *
      * @param id id transaccion
-     * @return  regresa la transaccion
+     * @return regresa la transaccion
      */
     public TransaccionFolio verTransaccionFolio(int id) {
         String select = "SELECT * FROM transaccionfoliocliente WHERE id_transaccion = ?";
@@ -98,10 +97,10 @@ public class TransaccionFolioDAO {
         return tEncontrada;
     }
 
-    
     /**
-     * Metodo para ver el historial de transacciones, utilizando el procedure 'verHistoria'
-     * 
+     * Metodo para ver el historial de transacciones, utilizando el procedure
+     * 'verHistoria'
+     *
      * @param id id de la cuenta asociada
      * @return regresa la lista de transacciones
      */
@@ -137,28 +136,30 @@ public class TransaccionFolioDAO {
         return transacciones;
     }
 
-/**
- * Metodo que se encarga de generar una lista de trandaccionFolio llamando al procedure veriHistorialRetiros
- * @param id id de la cuenta asociada
- * @return lista de transacciones
- */
-public ArrayList<TransaccionFolio> verHistorialRetiros(String id) { 
-    ArrayList<TransaccionFolio> transacciones= new ArrayList<>();
+    /**
+     * Metodo que se encarga de generar una lista de trandaccionFolio llamando
+     * al procedure veriHistorialRetiros
+     *
+     * @param id id de la cuenta asociada
+     * @return lista de transacciones
+     */
+    public ArrayList<TransaccionFolio> verHistorialRetiros(String id) {
+        ArrayList<TransaccionFolio> transacciones = new ArrayList<>();
         try {
             Connection con = conexion.crearConexion();
             String verHistorialState = "{CALL verHistorialRetiros(?)}";
             CallableStatement callableStatement = con.prepareCall(verHistorialState);
             callableStatement.setString(1, id);
             boolean results = callableStatement.execute();
-                      while (results) {
+            while (results) {
                 ResultSet resultSet = callableStatement.getResultSet();
                 while (resultSet.next()) {
                     // int idTransaccion = resultSet.getInt("Id");
                     Timestamp fechaTransaccion = resultSet.getTimestamp("Fecha");
                     int monto = resultSet.getInt("Monto");
                     String tipoTransaccion = resultSet.getString("Tipo de Transacción");
-                    String estado=resultSet.getString("Estado");
-                    TransaccionFolio transaccion = new TransaccionFolio(fechaTransaccion, tipoTransaccion, monto,estado);
+                    String estado = resultSet.getString("Estado");
+                    TransaccionFolio transaccion = new TransaccionFolio(fechaTransaccion, tipoTransaccion, monto, estado);
                     transacciones.add(transaccion);
 
                 }
@@ -168,47 +169,122 @@ public ArrayList<TransaccionFolio> verHistorialRetiros(String id) {
         } catch (SQLException ex) {
             Logger.getLogger(TransaccionFolioDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-       return transacciones;
-}
-/**
- * Metodo que guarda en una lista transferencias cuyo tipo de transaccion sea "Transferencia";
- * @param id
- * @return lista de transferencias
- */
-public ArrayList<Transaccion> verHistorialTransaccion(String id) {
-    ArrayList<Transaccion> transacciones = new ArrayList<>();
-    try {
-        Connection con = conexion.crearConexion();
-        String verHistorialState = "{CALL verHistorial(?)}";
-        CallableStatement callableStatement = con.prepareCall(verHistorialState);
-        callableStatement.setString(1, id);
-        boolean results = callableStatement.execute();
+        return transacciones;
+    }
 
-        while (results) {
-            ResultSet resultSet = callableStatement.getResultSet();
-            while (resultSet.next()) {
-                String tipoTransaccion = resultSet.getString("Tipo de Transacción");
-                // Verifica si el tipo de transacción es "Transferencia"
-                if ("Transferencia".equals(tipoTransaccion)) {
+    /**
+     * Metodo que guarda en una lista transferencias cuyo tipo de transaccion
+     * sea "Transferencia";
+     *
+     * @param id
+     * @return lista de transferencias
+     */
+    public ArrayList<Transaccion> verHistorialTransaccion(String id) {
+        ArrayList<Transaccion> transacciones = new ArrayList<>();
+        try {
+            Connection con = conexion.crearConexion();
+            String verHistorialState = "{CALL verHistorial(?)}";
+            CallableStatement callableStatement = con.prepareCall(verHistorialState);
+            callableStatement.setString(1, id);
+            boolean results = callableStatement.execute();
+
+            while (results) {
+                ResultSet resultSet = callableStatement.getResultSet();
+                while (resultSet.next()) {
+                    String tipoTransaccion = resultSet.getString("Tipo de Transacción");
+                    // Verifica si el tipo de transacción es "Transferencia"
+                    if ("Transferencia".equals(tipoTransaccion)) {
+                        Timestamp fechaTransaccion = resultSet.getTimestamp("Fecha");
+                        int monto = resultSet.getInt("Monto");
+                        Transaccion transaccion = new Transaccion(fechaTransaccion, tipoTransaccion, monto);
+                        transacciones.add(transaccion);
+                    }
+                }
+                results = callableStatement.getMoreResults();
+            }
+
+        } catch (SQLException e) {
+            Logger.getLogger(CuentaDAO.class.getName()).log(Level.SEVERE, "No ha sido posible recuperar los datos", e);
+        }
+        return transacciones;
+    }
+
+    /**
+     * Regresa una lista de transacciones realizadas en un periodo de tiempo
+     *
+     * @param id
+     * @param desde
+     * @param hasta
+     * @return lista de transacciones
+     */
+    public ArrayList<Transaccion> verHistorialTransaccionPeriodo(String id, Timestamp desde, Timestamp hasta) {
+        ArrayList<Transaccion> transacciones = new ArrayList<>();
+        try {
+            Connection con = conexion.crearConexion();
+            String verHistorialState = "{CALL verHistorialPeriodo(?,?,?)}";
+            CallableStatement callableStatement = con.prepareCall(verHistorialState);
+            callableStatement.setString(1, id);
+            callableStatement.setTimestamp(2, desde);
+            callableStatement.setTimestamp(3, hasta);
+            boolean results = callableStatement.execute();
+
+            while (results) {
+                ResultSet resultSet = callableStatement.getResultSet();
+                while (resultSet.next()) {
+                    String tipoTransaccion = resultSet.getString("Tipo de Transacción");
+                    // Filtrar solo las transacciones de tipo "Transferencia"
+                    if ("Transferencia".equals(tipoTransaccion)) {
+                        Timestamp fechaTransaccion = resultSet.getTimestamp("Fecha");
+                        int monto = resultSet.getInt("Monto");
+                        Transaccion transaccion = new Transaccion(fechaTransaccion, tipoTransaccion, monto);
+                        transacciones.add(transaccion);
+                    }
+                }
+                results = callableStatement.getMoreResults();
+            }
+
+        } catch (SQLException e) {
+            Logger.getLogger(CuentaDAO.class.getName()).log(Level.SEVERE, "No ha sido posible recuperar los datos", e);
+        }
+        return transacciones;
+    }
+
+    public ArrayList<Transaccion> verHistorialTransferenciaPeriodo(String id, Timestamp desde, Timestamp hasta) {
+        ArrayList<Transaccion> transacciones = new ArrayList<>();
+        try {
+            Connection con = conexion.crearConexion();
+            String verHistorialState = "{CALL verHistorialPeriodo(?,?,?)}";
+            CallableStatement callableStatement = con.prepareCall(verHistorialState);
+            callableStatement.setString(1, id);
+            callableStatement.setTimestamp(2, desde);
+            callableStatement.setTimestamp(3, hasta);
+            boolean results = callableStatement.execute();
+
+            while (results) {
+                ResultSet resultSet = callableStatement.getResultSet();
+                while (resultSet.next()) {
+                    String tipoTransaccion = resultSet.getString("Tipo de Transacción");
+
                     Timestamp fechaTransaccion = resultSet.getTimestamp("Fecha");
                     int monto = resultSet.getInt("Monto");
                     Transaccion transaccion = new Transaccion(fechaTransaccion, tipoTransaccion, monto);
                     transacciones.add(transaccion);
-                }
-            }
-            results = callableStatement.getMoreResults();
-        }
 
-    } catch (SQLException e) {
-        Logger.getLogger(CuentaDAO.class.getName()).log(Level.SEVERE, "No ha sido posible recuperar los datos", e);
+                }
+                results = callableStatement.getMoreResults();
+            }
+
+        } catch (SQLException e) {
+            Logger.getLogger(CuentaDAO.class.getName()).log(Level.SEVERE, "No ha sido posible recuperar los datos", e);
+        }
+        return transacciones;
     }
-    return transacciones;
-}
-    
+
     /**
      * Metodo para editar una transaccion de tipo 'Folio' (sin cuenta asociada)
-     * Lo unico editable, es el estado, se utilizara internamente para la logica de cobrado, no cobrado y vencido
-     * 
+     * Lo unico editable, es el estado, se utilizara internamente para la logica
+     * de cobrado, no cobrado y vencido
+     *
      * @param t transaccion
      * @return regresa la transaccion
      */
@@ -237,7 +313,5 @@ public ArrayList<Transaccion> verHistorialTransaccion(String id) {
         }
         return tr;
     }
-    
-    
 
 }
