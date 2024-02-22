@@ -1,6 +1,6 @@
-
 package gui;
 
+import control.Validaciones;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import objetos.Cliente;
@@ -13,9 +13,11 @@ public class DlgRegistro extends javax.swing.JDialog {
 
     private final Cliente cliente;
     private final int operacion;
+    private final Validaciones validacion;
 
     /**
      * Creates new form DlgRegistro
+     *
      * @param parent frame paren
      * @param modal true
      * @param cliente cliente recibido
@@ -24,9 +26,10 @@ public class DlgRegistro extends javax.swing.JDialog {
     public DlgRegistro(java.awt.Frame parent, boolean modal, Cliente cliente, int operacion) {
         super(parent, modal);
         this.cliente = cliente;
-        this.operacion=operacion;
+        this.operacion = operacion;
+        validacion = new Validaciones();
         initComponents();
-        
+
         if (operacion == 1) {
             jLabel1.setText("registrarme");
             registrarseBoton.setText("Registrarme");
@@ -52,7 +55,7 @@ public class DlgRegistro extends javax.swing.JDialog {
             coloniaTextField.setText(cliente.getColonia());
             cpTextField.setText(cliente.getCodigo_postal());
             jDateChooser1.setDate(cliente.getFecha_nacimiento());
-            
+
             nombresTextField.setEditable(true);
             apPaternoTextField.setEditable(true);
             apMaternoTextField.setEditable(true);
@@ -65,9 +68,8 @@ public class DlgRegistro extends javax.swing.JDialog {
             jPasswordField2.setEditable(false);
             jPasswordField2.setVisible(false);
         }
-setVisible(true);
+        setVisible(true);
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -256,44 +258,89 @@ setVisible(true);
 
     /**
      * Metodo para mandar un registro de cliente a la base de datos.
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void registrarseBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarseBotonActionPerformed
         if (operacion == 1) {
-            cliente.setNombre(nombresTextField.getText());
-            cliente.setApellido_paterno(apPaternoTextField.getText());
-            cliente.setApellido_materno(apMaternoTextField.getText());
-            Date fechaSeleccionada = jDateChooser1.getDate();
-            java.sql.Date fechaNacimiento = new java.sql.Date(fechaSeleccionada.getTime());
-            cliente.setFecha_nacimiento(fechaNacimiento);
-            cliente.setCalle(calleTextField.getText());
-            cliente.setColonia(coloniaTextField.getText());
-            cliente.setCodigo_postal(cpTextField.getText());
-            String contrasena1 = jPasswordField1.getText();
-            String contrasena2 = jPasswordField2.getText();
-            if (contrasena1.equals(contrasena2)) { //revisa que los dos campos tengan la misma contraseña
-                cliente.setPassw(contrasena1);
+             String contrasena1 = jPasswordField1.getText();
+             String contrasena2 = jPasswordField2.getText();
+            if (validacion.esMayorDeEdad(jDateChooser1.getDate()) && validacion.validarNumeros(cpTextField.getText())
+                    && validacion.validarNombre(nombresTextField.getText()) && validacion.validarNombre(apPaternoTextField.getText())
+                    && validacion.validarNombre(apMaternoTextField.getText())&&validacion.validarContrasena(contrasena1)) {
+                cliente.setNombre(nombresTextField.getText());
+                cliente.setApellido_paterno(apPaternoTextField.getText());
+                cliente.setApellido_materno(apMaternoTextField.getText());
+                Date fechaSeleccionada = jDateChooser1.getDate();
+                java.sql.Date fechaNacimiento = new java.sql.Date(fechaSeleccionada.getTime());
+                cliente.setFecha_nacimiento(fechaNacimiento);
+                cliente.setCalle(calleTextField.getText());
+                cliente.setColonia(coloniaTextField.getText());
+                cliente.setCodigo_postal(cpTextField.getText());
+               
+                if (contrasena1.equals(contrasena2)) { //revisa que los dos campos tengan la misma contraseña
+                    cliente.setPassw(contrasena1);
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                if (!validacion.esMayorDeEdad(jDateChooser1.getDate())) {
+                    JOptionPane.showMessageDialog(null, "Tiene que ser mayor de edad para registrarse", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                if (!validacion.validarNumeros(cpTextField.getText())) {
+                    JOptionPane.showMessageDialog(null, "El codigo postal solo acepta valores numericos", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                if (!validacion.validarNombre(nombresTextField.getText())) {
+                    JOptionPane.showMessageDialog(null, "El nombre solo acepta valores numericos", "Error", JOptionPane.ERROR_MESSAGE);
+
+                }
+                if (!validacion.validarNombre(apPaternoTextField.getText())) {
+                    JOptionPane.showMessageDialog(null, "El apellido solo acepta valores numericos", "Error", JOptionPane.ERROR_MESSAGE);
+
+                }
+                if (!validacion.validarNombre(apMaternoTextField.getText())) {
+                    JOptionPane.showMessageDialog(null, "El apellido solo acepta valores numericos", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                if (!validacion.validarContrasena(contrasena1)) {
+                    JOptionPane.showMessageDialog(null, "La contraseña no es segura", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+        }
+        if (validacion.validarNumeros(cpTextField.getText()) && 
+                validacion.validarNombre(nombresTextField.getText()) && validacion.validarNombre(apPaternoTextField.getText())
+                && validacion.validarNombre(apMaternoTextField.getText())) {
+            if (operacion == 2) {
+                cliente.setNombre(nombresTextField.getText());
+                cliente.setApellido_paterno(apPaternoTextField.getText());
+                cliente.setApellido_materno(apMaternoTextField.getText());
+                Date fechaSeleccionada = jDateChooser1.getDate();
+                java.sql.Date fechaNacimiento = new java.sql.Date(fechaSeleccionada.getTime());
+                cliente.setFecha_nacimiento(fechaNacimiento);
+                cliente.setCalle(calleTextField.getText());
+                cliente.setColonia(coloniaTextField.getText());
+                cliente.setCodigo_postal(cpTextField.getText());
                 dispose();
             } else {
-                JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+              
+                if (!validacion.validarNumeros(cpTextField.getText())) {
+                    JOptionPane.showMessageDialog(null, "El codigo postal solo acepta valores numericos", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                if (!validacion.validarNombre(nombresTextField.getText())) {
+                    JOptionPane.showMessageDialog(null, "El nombre solo acepta valores numericos", "Error", JOptionPane.ERROR_MESSAGE);
+
+                }
+                if (!validacion.validarNombre(apPaternoTextField.getText())) {
+                    JOptionPane.showMessageDialog(null, "El apellido solo acepta valores numericos", "Error", JOptionPane.ERROR_MESSAGE);
+
+                }
+                if (!validacion.validarNombre(apMaternoTextField.getText())) {
+                    JOptionPane.showMessageDialog(null, "El apellido solo acepta valores numericos", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
-        }
-        if (operacion == 2) {
-      cliente.setNombre(nombresTextField.getText());
-            cliente.setApellido_paterno(apPaternoTextField.getText());
-            cliente.setApellido_materno(apMaternoTextField.getText());
-            Date fechaSeleccionada = jDateChooser1.getDate();
-            java.sql.Date fechaNacimiento = new java.sql.Date(fechaSeleccionada.getTime());
-            cliente.setFecha_nacimiento(fechaNacimiento);
-            cliente.setCalle(calleTextField.getText());
-            cliente.setColonia(coloniaTextField.getText());
-            cliente.setCodigo_postal(cpTextField.getText());
-            dispose();
 
         }
-
-
     }//GEN-LAST:event_registrarseBotonActionPerformed
 
 

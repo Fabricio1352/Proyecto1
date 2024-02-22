@@ -5,6 +5,7 @@
 package gui;
 
 import control.Control;
+import control.Validaciones;
 import javax.swing.JOptionPane;
 import objetos.Cliente;
 import objetos.Cuenta;
@@ -16,12 +17,14 @@ import objetos.Cuenta;
 public class FrameInicio extends javax.swing.JFrame {
 
     Control control;
+    Validaciones validaciones;
 
     /**
      * Creates new form InicioFrame
      */
     public FrameInicio() {
         control = new Control();
+        validaciones = new Validaciones();
         initComponents();
     }
 
@@ -177,28 +180,33 @@ public class FrameInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_registrarseBotonActionPerformed
 
     private void inicioSesionBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inicioSesionBotonActionPerformed
-        try {
-            int idCliente = Integer.parseInt(idClientetextField.getText());
-            String contraseña = contraseñaTextField.getText();
-            idClientetextField.setText("");
-            contraseñaTextField.setText("");
-            String passw = null;
-            Cuenta cuenta;
-            Cliente cliente = new Cliente();
-            cliente.setId(idCliente);
-            cliente.setPassw(contraseña);
+        if (validaciones.validarNumeros(idClientetextField.getText())) {
+            try {
+                int idCliente = Integer.parseInt(idClientetextField.getText());
+                String contraseña = contraseñaTextField.getText();
+                idClientetextField.setText("");
+                contraseñaTextField.setText("");
+                String passw = null;
+                Cuenta cuenta;
+                Cliente cliente = new Cliente();
+                cliente.setId(idCliente);
+                cliente.setPassw(contraseña);
 
-            cliente = control.iniciarSesion(cliente);
+                cliente = control.iniciarSesion(cliente);
 
-            if (cliente != null) {
-                cuenta = control.seleccionarCuenta(cliente, this);
+                if (cliente != null) {
+                    cuenta = control.seleccionarCuenta(cliente, this);
 
-            } else {
-                JOptionPane.showMessageDialog(null, "No se ha encontrado al cliente", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se ha encontrado al cliente", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "El ID del cliente debe ser un número válido", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Formato incorrecto. Por favor ingrese solo números para el id.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+
     }//GEN-LAST:event_inicioSesionBotonActionPerformed
 
     private void idClientetextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idClientetextFieldActionPerformed
@@ -212,7 +220,7 @@ public class FrameInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_idClientetextFieldKeyTyped
 
     private void retiroFolioBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retiroFolioBotonActionPerformed
-        DlgCobrarFolio dlgCobrarFolio=new DlgCobrarFolio(this,true);
+        DlgCobrarFolio dlgCobrarFolio = new DlgCobrarFolio(this, true);
     }//GEN-LAST:event_retiroFolioBotonActionPerformed
 
     /**
