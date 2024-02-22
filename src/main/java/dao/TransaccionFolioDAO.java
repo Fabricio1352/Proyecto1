@@ -137,6 +137,73 @@ public class TransaccionFolioDAO {
         return transacciones;
     }
 
+/**
+ * Metodo que se encarga de generar una lista de trandaccionFolio llamando al procedure veriHistorialRetiros
+ * @param id id de la cuenta asociada
+ * @return lista de transacciones
+ */
+public ArrayList<TransaccionFolio> verHistorialRetiros(String id) { 
+    ArrayList<TransaccionFolio> transacciones= new ArrayList<>();
+        try {
+            Connection con = conexion.crearConexion();
+            String verHistorialState = "{CALL verHistorialRetiros(?)}";
+            CallableStatement callableStatement = con.prepareCall(verHistorialState);
+            callableStatement.setString(1, id);
+            boolean results = callableStatement.execute();
+                      while (results) {
+                ResultSet resultSet = callableStatement.getResultSet();
+                while (resultSet.next()) {
+                    // int idTransaccion = resultSet.getInt("Id");
+                    Timestamp fechaTransaccion = resultSet.getTimestamp("Fecha");
+                    int monto = resultSet.getInt("Monto");
+                    String tipoTransaccion = resultSet.getString("Tipo de Transacción");
+                    String estado=resultSet.getString("Estado");
+                    TransaccionFolio transaccion = new TransaccionFolio(fechaTransaccion, tipoTransaccion, monto,estado);
+                    transacciones.add(transaccion);
+
+                }
+                results = callableStatement.getMoreResults();
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TransaccionFolioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       return transacciones;
+}
+/**
+ * Metodo que guarda en una lista transferencias cuyo tipo de transaccion sea "Transferencia";
+ * @param id
+ * @return lista de transferencias
+ */
+public ArrayList<Transaccion> verHistorialTransaccion(String id) {
+    ArrayList<Transaccion> transacciones = new ArrayList<>();
+    try {
+        Connection con = conexion.crearConexion();
+        String verHistorialState = "{CALL verHistorial(?)}";
+        CallableStatement callableStatement = con.prepareCall(verHistorialState);
+        callableStatement.setString(1, id);
+        boolean results = callableStatement.execute();
+
+        while (results) {
+            ResultSet resultSet = callableStatement.getResultSet();
+            while (resultSet.next()) {
+                String tipoTransaccion = resultSet.getString("Tipo de Transacción");
+                // Verifica si el tipo de transacción es "Transferencia"
+                if ("Transferencia".equals(tipoTransaccion)) {
+                    Timestamp fechaTransaccion = resultSet.getTimestamp("Fecha");
+                    int monto = resultSet.getInt("Monto");
+                    Transaccion transaccion = new Transaccion(fechaTransaccion, tipoTransaccion, monto);
+                    transacciones.add(transaccion);
+                }
+            }
+            results = callableStatement.getMoreResults();
+        }
+
+    } catch (SQLException e) {
+        Logger.getLogger(CuentaDAO.class.getName()).log(Level.SEVERE, "No ha sido posible recuperar los datos", e);
+    }
+    return transacciones;
+}
     
     /**
      * Metodo para editar una transaccion de tipo 'Folio' (sin cuenta asociada)

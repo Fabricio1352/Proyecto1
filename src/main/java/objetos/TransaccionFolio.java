@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  *
  * @author fabri
  */
-public class TransaccionFolio {
+public class TransaccionFolio extends Transaccion {
 
     private int idTransaccion; // Identificador de la transacción
     private String folioTransaccion; // Folio de la transacción
@@ -41,6 +41,16 @@ public class TransaccionFolio {
      */
     public TransaccionFolio(String estado) {
         this.estado = estado;
+    }
+
+    /**
+     * Constructor de transaccionFolio el cual aplica herencia para usarlo
+     * depues en un caso en especifico
+     */
+    public TransaccionFolio(Timestamp fechahora_transaccion, String formatoTipoTransaccion, int cantidad, String estado) {
+        super(fechahora_transaccion, formatoTipoTransaccion, cantidad);
+        this.estado = estado;
+
     }
 
     /**
@@ -140,4 +150,5 @@ public class TransaccionFolio {
     public void setTiempo(Timestamp tiempo) {
         this.tiempo = tiempo;
     }
+
 }

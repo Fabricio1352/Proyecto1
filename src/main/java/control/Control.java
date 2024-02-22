@@ -35,7 +35,7 @@ import objetos.TransaccionFolio;
  * @author abelc
  */
 public class Control {
-
+    
     Conversiones conversiones;
     private final String cadenaConexion = "jdbc:mysql://localhost:3306/banco";
     private final String user = "root";
@@ -45,14 +45,14 @@ public class Control {
     private final CuentaDAO cuentaDAO;
     private final TransaccionDAO transaccionDAO;
     private final TransaccionFolioDAO transFolioDao;
-
+    
     public Control() {
         clienteDAO = new ClienteDAO(conexionDB);
         cuentaDAO = new CuentaDAO(conexionDB);
         transaccionDAO = new TransaccionDAO(conexionDB);
         transFolioDao = new TransaccionFolioDAO(conexionDB);
         conversiones = new Conversiones();
-
+        
     }
 
     /**
@@ -72,7 +72,10 @@ public class Control {
             cuenta.setCliente(cliente);
             cuenta.setSaldo(1000);
             cuentaDAO.registrarCuenta(cuenta);
-            JOptionPane.showMessageDialog(frame, "Cliente registrado con éxito. ID del cliente: " + cliente.getId(), "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
+            if (clienteDAO.buscarCliente(cliente.getId())!=null) {
+              JOptionPane.showMessageDialog(frame, "Cliente registrado con éxito. ID del cliente: " + cliente.getId(), "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);  
+            }
+            
         } catch (PersistenciaException ex) {
             Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -103,27 +106,27 @@ public class Control {
      */
     private Cliente encriptarPassw(Cliente cliente) {
         String contraseña = cliente.getPassw();
-
+        
         try {
-
+            
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-
+            
             byte[] hashBytes = md.digest(contraseña.getBytes());
-
+            
             StringBuilder sb = new StringBuilder();
             for (byte b : hashBytes) {
                 sb.append(String.format("%02x", b));
             }
-
+            
             String hash = sb.toString();
-
+            
             cliente.setPassw(hash);
-
+            
             return cliente;
-
+            
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-
+            
             return cliente;
         }
     }
@@ -135,26 +138,26 @@ public class Control {
      * @return password encriptada
      */
     public String encriptarPassw(String passw) {
-        String contraseña = passw;
-
+ 
+        
         try {
-
+            
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-
-            byte[] hashBytes = md.digest(contraseña.getBytes());
-
+            
+            byte[] hashBytes = md.digest(passw.getBytes());
+            
             StringBuilder sb = new StringBuilder();
             for (byte b : hashBytes) {
                 sb.append(String.format("%02x", b));
             }
-
+            
             String hash = sb.toString();
-
-            return passw;
-
+            
+            return hash;
+            
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-
+            
             return passw;
         }
     }
@@ -166,23 +169,23 @@ public class Control {
      * @return cliente verificado
      */
     public Cliente iniciarSesion(Cliente cliente) {
-
+        
         Cliente clienteEncontrado = clienteDAO.buscarCliente(cliente.getId());
-
+        
         if (clienteEncontrado == null) {
             return null;
         }
-
+        
         String contraseñaEncriptadaCliente = encriptarPassw(cliente).getPassw();
-
+        
         if (clienteEncontrado.getPassw().equals(contraseñaEncriptadaCliente)) {
-
+            
             return clienteEncontrado;
         } else {
-
+            
             return null;
         }
-
+        
     }
 
     /**
@@ -200,9 +203,9 @@ public class Control {
         cuentasComboBoxModel = conversiones.cuentasComboBoxModel(cuentaDAO.buscarCuentaPorCliente(cliente.getId()));
         dlgCuenta = new DlgSeleccionarcuenta(frame, true, cliente, cuentasComboBoxModel, numCuenta);
         numCuenta = dlgCuenta.getNumCuenta();
-
+        
         cuenta = cuentaDAO.buscarCuenta(numCuenta);
-
+        
         return cuenta;
     }
 
@@ -239,7 +242,7 @@ public class Control {
      */
     public boolean retiroFolio(String folio, String passw) {
         boolean retiroExitoso = transaccionDAO.retiro(folio, passw);
-
+        
         return retiroExitoso;
     }
 
@@ -265,7 +268,7 @@ public class Control {
             cuentaDAO.transferencia(idOrigen, monto2, idDestino);
             return true;
         }
-
+        
     }
 
     /**
@@ -277,7 +280,7 @@ public class Control {
      */
     public String getPw(int idTrans) {
         return transaccionDAO.obtenerPwTransaccionNoCliente(idTrans);
-
+        
     }
 
     /**
@@ -289,7 +292,7 @@ public class Control {
      */
     public String getFolio(int idTrans) {
         return transaccionDAO.obtenerFolioTransaccionNoCliente(idTrans);
-
+        
     }
 
     /**
@@ -301,9 +304,26 @@ public class Control {
      */
     public ArrayList<Transaccion> obtenerListaTransacciones(String idCuenta) {
         return transaccionDAO.verHistorial(idCuenta);
-
+        
     }
-
+    /**
+     * Metodo auxiliar para actualizar los estados de cuenta,trae una lista de retiros
+     * @param idCuenta id de la cuenta
+     * @return lista de retiros
+     */
+  public ArrayList<TransaccionFolio> obtenerListaretiros(String idCuenta) {
+        return transFolioDao.verHistorialRetiros(idCuenta);  
+    }
+  /**
+   * Metodo auxiliar para actualizar estados de cuenta, trae las transferencias cuyo tipo es 
+   * "transferencia"
+   * @param idCuenta
+   * @return lista de transferencias
+   */
+   public ArrayList<Transaccion> obtenerListaTransferencias(String idCuenta) {
+        return transFolioDao.verHistorialTransaccion(idCuenta);
+        
+    }
     /**
      * Metodo PRINCIPAL para verificar que las tareas esten vencidas o no, cada
      * vez que ingresas folio y pw el sistema detecta y compara la hora de
@@ -329,7 +349,7 @@ public class Control {
                 return false;
             }
         }
-
+        
         return true;
     }
 
@@ -347,9 +367,9 @@ public class Control {
             JOptionPane.showMessageDialog(null, "Verifica los datos introducidos");
             return -1;
         } else {
-
+            
             int montoReal = Integer.parseInt(cantidadRetirar);
-
+            
             if (saldo < montoReal) {
                 JOptionPane.showMessageDialog(null, "No tienes suficiente dinero");
                 return -1;
@@ -359,24 +379,27 @@ public class Control {
             }
             Transaccion t = transaccionDAO.registrarTransaccion(new Transaccion(false, montoReal, cuenta));
             int idTransaccion = t.getId_transaccion();
-
+            
             TransaccionFolio trans = transFolioDao.verTransaccionFolio(idTransaccion);
-
+            
             Timestamp fechaHoraActual = new Timestamp(System.currentTimeMillis());
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(fechaHoraActual);
             calendar.add(Calendar.MINUTE, 10);
-
+            
             Timestamp fechaHoraCon10MinutosMas = new Timestamp(calendar.getTimeInMillis());
             trans.setTiempo(fechaHoraCon10MinutosMas);
             transFolioDao.editarTransaccion(trans);
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
-
+                
                 @Override
                 public void run() {
-                    trans.setEstado("vencido");
-                    transFolioDao.editarTransaccion(trans);
+                    if (transFolioDao.verTransaccionFolio(trans.getIdTransaccion()).getEstado().equals("Generado")) {
+                        trans.setEstado("no cobrado");
+                        transFolioDao.editarTransaccion(trans);
+                    }
+                    
                 }
             }, fechaHoraCon10MinutosMas);
             return trans.getIdTransaccion();
@@ -393,12 +416,12 @@ public class Control {
     private boolean regex(String regex, String texto) {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(texto);
-
+        
         if (!matcher.matches()) {
             JOptionPane.showMessageDialog(null, "Verifica los datos introducidos");
             return false;
         }
         return true;
     }
-
+    
 }

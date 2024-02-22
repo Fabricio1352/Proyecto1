@@ -97,8 +97,8 @@ BEGIN
 				# para que no se muestren 0 y 1, le damos formato usando WHEN
                 # tambien se pudo cambiar el atributo de la columna tipo_transaccion a un ENUM
                 # que guarde valores de 'folio' y 'cliente' pero es mas facil operar con true y false
-				WHEN tipo_transaccion = 0 THEN 'Transferencia'
-                WHEN tipo_transaccion = 1 THEN 'Cliente'
+				WHEN tipo_transaccion = 0 THEN 'Retiro'
+                WHEN tipo_transaccion = 1 THEN 'Transferencia'
 			END AS 'Tipo de Transacción'
 
     FROM
@@ -109,7 +109,26 @@ BEGIN
 END$$
 DELIMITER ;
 
-
+DELIMITER $$
+CREATE PROCEDURE verHistorialRetiros(IN id VARCHAR(16))
+BEGIN
+SELECT
+t.fecha_hora_transaccion AS 'Fecha',
+t.cantidad 'Monto', 
+tsf.estado 'Estado',
+CASE 
+		WHEN t.tipo_transaccion = 0 THEN 'Retiro'
+		WHEN t.tipo_transaccion = 1 THEN 'Transferencia'
+		END AS 'Tipo de Transacción'
+        FROM 
+        transaccion t
+        JOIN transaccionfoliocliente tsf on t.id_transaccion=tsf.id_transaccion
+        WHERE id=t.id_cuenta
+          ORDER BY
+        t.fecha_hora_transaccion 
+        DESC;
+END$$
+DELIMITER;
 
 
 
@@ -190,7 +209,7 @@ DELIMITER ;
 
 
 
-drop procedure cobrartransaccion;
+
 DELIMITER $$
 CREATE PROCEDURE CobrarTransaccion(
     IN folioTransaccion VARCHAR(255),
@@ -210,7 +229,7 @@ BEGIN
     -- Verificar si se encontró alguna transacción con el folio y contraseña proporcionados
     IF idTransaccion IS NOT NULL THEN
         -- Obtener el estado de la transacción
-        IF estadoTransaccion = 'no cobrado' THEN
+        IF estadoTransaccion = 'Generado' THEN
             -- Obtener la cantidad de la transacción y la cuenta asociada
             SELECT cantidad, id_cuenta INTO montoTransaccion, cuentaID
             FROM Transaccion
@@ -317,7 +336,7 @@ CREATE TABLE TransaccionFolioCliente(
 id_transaccion INT PRIMARY KEY,
 folio_transaccion VARCHAR(255),
 password_transaccion VARCHAR(8),
-estado VARCHAR(20) DEFAULT 'no cobrado',
+estado VARCHAR(20) DEFAULT 'Generado',
  tiempo TIMESTAMP DEFAULT NULL  ,
 FOREIGN KEY  (id_transaccion) REFERENCES Transaccion(id_transaccion )
 );
